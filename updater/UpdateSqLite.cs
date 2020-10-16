@@ -187,16 +187,18 @@ namespace updaterFactuWeb {
 						string indWhere = mdbFactu.GetWhereStringConditionByIndexes(table);
 						List<String> indexes = mdbFactu.GetIndexes(table);
 						
-						bool createtableSql = dbSqlite.ImportTable(dtFactu, indexes, y);
-						
-						bool st = this.incrementalSyncDataTable(dtFactu, indexes, indWhere, y);
-						if (!st) {
-							Stop();
-							return;
+						string createtableSql = dbSqlite.ImportTable(dtFactu, indexes, y);
+						if (createtableSql!="") {
+							API.EXECUTE(createtableSql);
 						}
+							bool st = this.incrementalSyncDataTable(dtFactu, indexes, indWhere, y);
+							if (!st) {
+								Stop();
+								return;
+							}
+						
 					}
 				}
-
 				Stop();
 			}
 		}
@@ -215,8 +217,8 @@ namespace updaterFactuWeb {
 
 			using (var conn = dbSqlite.GetConnection()) {
 				string where = "";
-				
-				if (y!= null) where = "WHERE `YEAR`='" + y + "'";
+
+				if (y != null) where = "WHERE `YEAR`='" + y + "'";
 
 				string query = $"SELECT * FROM {tableName} {where};";
 				DataTable sqlItems = dbSqlite.Select(query);
@@ -224,7 +226,7 @@ namespace updaterFactuWeb {
 				int it = 0;
 				foreach (DataRow row in table.Rows) {
 					it++;
-					int percent = it * 100 / table.Rows.Count;
+					int percent = it * 50 / table.Rows.Count;
 					triggerOnPercentChange(new UpdateTaskResponse("", percent));
 
 					string[] indexItems = new string[indexes.Count];
@@ -232,7 +234,10 @@ namespace updaterFactuWeb {
 						indexItems[i] = row[indexes[i]].ToString();
 					}
 
-					 where = string.Format(indWhere, indexItems).Replace("WHERE ", "");
+					where = string.Format(indWhere, indexItems).Replace("WHERE ", "");
+
+					//if (where == "`CODART`=2402"){ var t = where;}
+
 					if (y != null)
 						where += " AND `YEAR`='" + y + "'";
 					DataRow[] result = sqlItems.Select(where);
@@ -261,30 +266,21 @@ namespace updaterFactuWeb {
 							if (c.AllowDBNull && valsqlite == DBNull.Value)
 								valsqlite = null;
 
-							if (val == null && valsqlite == null) { } else {
-								if (columnName!="YEAR" && val.ToString().All(char.IsNumber)) valsqlite = val;
-								if (dbSqlite.FixedColumnName(c) != "YEAR" && !val.Equals(Convert.ChangeType(valsqlite, val.GetType()))) {
-									//if ((dynamic)val != (dynamic)valsqlite) { 
-									//if (!val.Equals(valsqlite)) {
-									inse = true;
-									try {
-										if (y != null) {
-											if (!row.Table.Columns.Contains("YEAR"))
-												row.Table.Columns.Add("YEAR");
-											row["YEAR"] = Properties.Settings.Default.year;
-										}
-										bool resp = API.REPLACE(table.TableName, where.Replace("`", "").Replace("'", "").Replace(" AND ", "&"), row);
-										if (!resp)
-											API.INSERT(table.TableName, row);
 
-									} catch (Exception ex) {
-										return false;
-									}
+							if (val != null || valsqlite != null) {
+								if (columnName != "YEAR" && val.ToString().All(char.IsNumber)) valsqlite = val;
+								if (dbSqlite.FixedColumnName(c) != "YEAR" && !val.Equals(Convert.ChangeType(valsqlite, val.GetType()))) {
+									inse = true;
 									break;
 								}
 							}
 						}
 					} else {
+						inse = true;
+					}
+
+					if (inse) {
+						// **** INSERT
 						try {
 							if (y != null) {
 								if (!row.Table.Columns.Contains("YEAR"))
@@ -293,12 +289,11 @@ namespace updaterFactuWeb {
 							}
 							API.INSERT(table.TableName, row);
 						} catch (Exception ex) {
+							System.Windows.Forms.MessageBox.Show(ex.Message, "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Exclamation);
+							Debug(ex.Message);
 							return false;
 						}
-					}
 
-					if (inse) {
-						// **** INSERT
 						using (var tx = conn.BeginTransaction()) {
 							using (SQLiteCommand cmd = new SQLiteCommand(insertSql, conn, tx)) {
 
@@ -325,28 +320,19 @@ namespace updaterFactuWeb {
 						}
 					}
 				}
-			}
-			triggerOnPercentChange(new UpdateTaskResponse("", 0));
-			return true;
-		}
 
-		private bool incrementalSyncDataTable2(DataTable table, List<String> indexes, string indWhere, string y = null) {
-			if (table is null)
-				return false;
-			apiRest API = new apiRest();
-			var columns = table.Columns.Cast<DataColumn>();
-			var columnSql = string.Join(", ", columns.Select(x => dbSqlite.FixedColumnName(x)));
-			if (y != null) { columnSql = "YEAR, " + columnSql; }
-			var paramSql = string.Join(", ", columns.Select(x => "@" + dbSqlite.FixedColumnName(x)));
-			if (y != null) { paramSql = "@YEAR, " + paramSql; }
-			var tableName = dbSqlite.FixedTableName(table);
-			var insertSql = $"INSERT OR REPLACE INTO {tableName} ({columnSql}) VALUES ({paramSql})";
 
-			using (var conn = dbSqlite.GetConnection()) {
-				int it = 0;
-				foreach (DataRow row in table.Rows) {
+
+				DataRow[] sqliteItems = sqlItems.Select();
+				if (y != null) 
+					sqliteItems = sqlItems.Select("`YEAR`='" + y + "'");
+				
+				
+				// DELETES
+				it = 0;
+				foreach (DataRow row in sqliteItems) {
 					it++;
-					int percent = it * 100 / table.Rows.Count;
+					int percent =(50)+( it * 50 / (table.Rows.Count));
 					triggerOnPercentChange(new UpdateTaskResponse("", percent));
 
 					string[] indexItems = new string[indexes.Count];
@@ -354,99 +340,108 @@ namespace updaterFactuWeb {
 						indexItems[i] = row[indexes[i]].ToString();
 					}
 
-					string where = string.Format(indWhere, indexItems).Replace("WHERE ", "");
-					if (y != null)
-						where += " AND `YEAR`='" + y + "'";
+					where = string.Format(indWhere, indexItems).Replace("WHERE ", "");
+					DataRow[] result = table.Select(where);
 
-					string query = $"SELECT * FROM {tableName} WHERE {where};";
-					//var cmd = new SQLiteCommand(stm, conn);
-					//int RowCount = Convert.ToInt32(cmd.ExecuteScalar());
-
-					DataTable sqlItems = dbSqlite.Select(query);
-
-					bool inse = false;
-					if (sqlItems.Rows.Count > 0) {
-						// **** COMPARE
-						foreach (var c in columns) {
-							string columnName = dbSqlite.FixedColumnName(c);
-							var val = row[c];
-							if (c.AllowDBNull && val == DBNull.Value) {
-								val = null;
-							} else if (val.GetType().Name == "Byte[]") {
-								val = "";
-							}
-							var valsqlite = sqlItems.Rows[0][columnName];
-							if (c.AllowDBNull && valsqlite == DBNull.Value)
-								valsqlite = null;
-
-							if (val == null && valsqlite == null) { } else {
-								if (dbSqlite.FixedColumnName(c) != "YEAR" && !val.Equals(Convert.ChangeType(valsqlite, val.GetType()))) {
-									//if ((dynamic)val != (dynamic)valsqlite) { 
-									//if (!val.Equals(valsqlite)) {
-									inse = true;
-									try {
-										if (y != null) {
-											if (!row.Table.Columns.Contains("YEAR"))
-												row.Table.Columns.Add("YEAR");
-											row["YEAR"] = Properties.Settings.Default.year;
-										}
-										bool resp = API.REPLACE(table.TableName, where.Replace("`", "").Replace("'", ""), row);
-										if (!resp)
-											API.INSERT(table.TableName, row);
-
-									} catch (Exception ex) {
-										return false;
-									}
-									break;
-								}
-							}
-						}
-					} else {
-						inse = true;
+					if (result.Length < 1) {
+						// **** DELETE
 						try {
 							if (y != null) {
 								if (!row.Table.Columns.Contains("YEAR"))
 									row.Table.Columns.Add("YEAR");
 								row["YEAR"] = Properties.Settings.Default.year;
 							}
-							API.INSERT(table.TableName, row);
+							API.DELETE(table.TableName, where);
 						} catch (Exception ex) {
+							System.Windows.Forms.MessageBox.Show(ex.Message, "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Exclamation);
+							Debug(ex.Message);
 							return false;
 						}
-					}
-
-					if (inse) {
-						// **** INSERT
 						using (var tx = conn.BeginTransaction()) {
-							using (SQLiteCommand cmd = new SQLiteCommand(insertSql, conn, tx)) {
-
-								if (y != null) {
-									var p = cmd.CreateParameter();
-									p.ParameterName = "YEAR";
-									p.Value = y;
-									cmd.Parameters.Add(p);
-								}
-								foreach (var c in columns) {
-									var val = row[c];
-									if (c.AllowDBNull && val == DBNull.Value)
-										val = null;
-
-									var p = cmd.CreateParameter();
-									p.ParameterName = dbSqlite.FixedColumnName(c);
-									p.Value = val;
-									cmd.Parameters.Add(p);
-								}
-
+							if (y != null)
+								where = where + " AND `YEAR`='" + y + "'";
+							using (SQLiteCommand cmd = new SQLiteCommand("DELETE FROM " + table.TableName + " WHERE " + where + ";", conn, tx)) {
 								cmd.ExecuteNonQuery();
 							}
 							tx.Commit();
 						}
+
 					}
 				}
 			}
-			triggerOnPercentChange(new UpdateTaskResponse("", 0));
+		
+		triggerOnPercentChange(new UpdateTaskResponse("", 0));
 			return true;
 		}
+
+
+
+		//private void RunPhotosJson() {
+		//	while (!UpdateProcessStopped) {
+		//		SyncContext.Post(e => triggerOnInitUpdate(new UpdateTaskResponse("")), null);
+
+		//		DataTable dt = new DataTable();
+		//		dt.Columns.Add("MD5", typeof(string));
+		//		dt.Columns.Add("codart", typeof(string));
+
+		//		Mdb dbFactu = new Mdb(Properties.Settings.Default.path + Properties.Settings.Default.company + Properties.Settings.Default.year + Properties.Settings.Default.dbExtension);
+		//		DataTable dtFactu = dbFactu.Query("SELECT CODART, IMGART FROM F_ART WHERE FAMART<>'' AND IMGART<>'';");
+		//		SyncContext.Post(e => triggerOnStatusChange(new UpdateTaskResponse("Actualizando Fotos")), null);
+		//		int itt = 0;
+		//		foreach (DataRow dtaRow in dtFactu.Rows) {
+		//			if (!UpdateProcessStopped) {
+		//				int percent = itt * 100 / dtFactu.Rows.Count;
+		//				triggerOnPercentChange(new UpdateTaskResponse("", percent));
+		//				itt++;
+		//				if (File.Exists(dtaRow[1].ToString())) {
+		//					DataRow dr = dt.NewRow();
+		//					dr["MD5"] = this.API.CalculateMD5(dtaRow[1].ToString());
+		//					dr["codart"] = dtaRow[0].ToString();
+		//					dt.Rows.Add(dr);
+		//				}
+		//			}
+		//		}
+
+		//		dtFactu = dbFactu.Query("SELECT CODIMG, IMGIMG FROM F_IMG WHERE FAMIMG<>'';");
+		//		SyncContext.Post(e => triggerOnStatusChange(new UpdateTaskResponse("Actualizando Fotos con acabados")), null);
+		//		itt = 0;
+		//		foreach (DataRow dtaRow in dtFactu.Rows) {
+		//			if (!UpdateProcessStopped) {
+		//				int percent = itt * 100 / dtFactu.Rows.Count;
+		//				triggerOnPercentChange(new UpdateTaskResponse("", percent));
+		//				itt++;
+		//				if (dtaRow[1].ToString() != "") {
+		//					if (File.Exists(dtaRow[1].ToString())) {
+		//						try {
+		//							DataRow dr = dt.NewRow();
+		//							dr["MD5"] = this.API.CalculateMD5(dtaRow[1].ToString());
+		//							dr["codart"] = dtaRow[0].ToString();
+		//							dt.Rows.Add(dr);
+		//						} catch (Exception ex) {
+		//							SyncContext.Post(e => triggerOnError(new UpdateTaskResponse(ex.Message)), null);
+		//							Debug(ex.Message);
+		//							if (ex.Message.Contains("Forbidden") == true) {
+		//								SyncContext.Post(e => triggerOnError(new UpdateTaskResponse(ex.Message)), null);
+		//								triggerOnPercentChange(new UpdateTaskResponse("", 0));
+		//								Stop();
+		//							}
+		//						}
+
+		//					}
+		//				}
+		//			}
+		//		}
+
+
+		//		this.API.PHOTOS(dt);
+		//		triggerOnPercentChange(new UpdateTaskResponse("", 0));
+		//		Stop();
+
+
+		//	}
+
+
+		//}
 
 		private void RunPhotos() {
 			while (!UpdateProcessStopped) {
@@ -457,18 +452,53 @@ namespace updaterFactuWeb {
 				SyncContext.Post(e => triggerOnStatusChange(new UpdateTaskResponse("Actualizando Fotos")), null);
 				int itt = 0;
 				foreach (DataRow dtaRow in dtFactu.Rows) {
-					int percent = itt * 100 / dtFactu.Rows.Count;
-					triggerOnPercentChange(new UpdateTaskResponse("", percent));
-					itt++;
-					if (dtaRow[1].ToString() != "") {
-						if (File.Exists(dtaRow[1].ToString())) {
-							try {
-								this.API.UPLOAD(dtaRow[0].ToString(), dtaRow[1].ToString());
-							} catch (Exception ex) {
-								SyncContext.Post(e => triggerOnError(new UpdateTaskResponse(ex.Message)), null);
-								Debug(ex.Message);
-							}
+					if (!UpdateProcessStopped) {
+						int percent = itt * 100 / dtFactu.Rows.Count;
+						triggerOnPercentChange(new UpdateTaskResponse("", percent));
+						itt++;
+						if (dtaRow[1].ToString() != "") {
+							if (File.Exists(dtaRow[1].ToString())) {
+								try {
 
+									this.API.UPLOAD(dtaRow[0].ToString(), dtaRow[1].ToString());
+								} catch (Exception ex) {
+									SyncContext.Post(e => triggerOnError(new UpdateTaskResponse(ex.Message)), null);
+									Debug(ex.Message);
+									if (ex.Message.Contains("Forbidden") == true) {
+										SyncContext.Post(e => triggerOnError(new UpdateTaskResponse(ex.Message)), null);
+										triggerOnPercentChange(new UpdateTaskResponse("", 0));
+										Stop();
+									}
+								}
+
+							}
+						}
+					}
+				}
+
+				dtFactu = dbFactu.Query("SELECT CODIMG, IMGIMG FROM F_IMG WHERE FAMIMG<>'';");
+				SyncContext.Post(e => triggerOnStatusChange(new UpdateTaskResponse("Actualizando Fotos con acabados")), null);
+				itt = 0;
+				foreach (DataRow dtaRow in dtFactu.Rows) {
+					if (!UpdateProcessStopped) {
+						int percent = itt * 100 / dtFactu.Rows.Count;
+						triggerOnPercentChange(new UpdateTaskResponse("", percent));
+						itt++;
+						if (dtaRow[1].ToString() != "") {
+							if (File.Exists(dtaRow[1].ToString())) {
+								try {
+									this.API.UPLOAD(dtaRow[0].ToString(), dtaRow[1].ToString());
+								} catch (Exception ex) {
+									SyncContext.Post(e => triggerOnError(new UpdateTaskResponse(ex.Message)), null);
+									Debug(ex.Message);
+									if (ex.Message.Contains("Forbidden") == true) {
+										SyncContext.Post(e => triggerOnError(new UpdateTaskResponse(ex.Message)), null);
+										triggerOnPercentChange(new UpdateTaskResponse("", 0));
+										Stop();
+									}
+								}
+
+							}
 						}
 					}
 				}
@@ -501,44 +531,29 @@ namespace updaterFactuWeb {
 							int percent = it * 100 / table.Rows.Count;
 							triggerOnPercentChange(new UpdateTaskResponse("", percent));
 
-
-								//try {
-								//	if (y != null) {
-								//		if (!row.Table.Columns.Contains("YEAR"))
-								//			row.Table.Columns.Add("YEAR");
-								//		row["YEAR"] = Properties.Settings.Default.year;
-								//	}
-								//} catch (Exception ex) {
-								//	return false;
-								//}
-					
-
-								// **** INSERT
-						
-
-								if (y != null) {
-									var p = cmd.CreateParameter();
-									p.ParameterName = "YEAR";
-									p.Value = y;
-									cmd.Parameters.Add(p);
-								}
-								foreach (var c in columns) {
-									var val = row[c];
-									if (c.AllowDBNull && val == DBNull.Value)
-										val = null;
-										if (c.DataType.FullName.Contains("Byte")) {
-											val = "";
-										}
-									var p = cmd.CreateParameter();
-									p.ParameterName = dbSqlite.FixedColumnName(c);
-									p.Value = val;
-									cmd.Parameters.Add(p);
-								}
-
-								cmd.ExecuteNonQuery();
+							if (y != null) {
+								var p = cmd.CreateParameter();
+								p.ParameterName = "YEAR";
+								p.Value = y;
+								cmd.Parameters.Add(p);
 							}
-							tx.Commit();
+							foreach (var c in columns) {
+								var val = row[c];
+								if (c.AllowDBNull && val == DBNull.Value)
+									val = null;
+									if (c.DataType.FullName.Contains("Byte")) {
+										val = "";
+									}
+								var p = cmd.CreateParameter();
+								p.ParameterName = dbSqlite.FixedColumnName(c);
+								p.Value = val;
+								cmd.Parameters.Add(p);
+							}
+
+							cmd.ExecuteNonQuery();
 						}
+						tx.Commit();
+					}
 				}
 				conn.Close();
 			}
@@ -612,7 +627,7 @@ namespace updaterFactuWeb {
 										dtFactu.Columns.Remove(dt);
 								}
 
-								bool createtableSql = dbSqlite.ImportTable(dtFactu, ((string[])found[0]["index"]).ToList(), y);
+								string createtableSql = dbSqlite.ImportTable(dtFactu, ((string[])found[0]["index"]).ToList(), y);
 								bool insert = this.importDataTable(dtFactu, y);
 							}
 						}

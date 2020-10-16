@@ -108,8 +108,8 @@ namespace updaterFactuWeb {
         }
 
           
-        public bool ImportTable(DataTable dataTable, List<string> indexes, string y = null) {
-            if (dataTable is null) return false;
+        public string ImportTable(DataTable dataTable, List<string> indexes, string y = null) {
+            if (dataTable is null) return "";
 
             var tableName = FixedTableName(dataTable);
 
@@ -135,12 +135,15 @@ namespace updaterFactuWeb {
             var sql = $"CREATE TABLE IF NOT EXISTS {tableName} ({columnSql} , PRIMARY KEY({ind}), CONSTRAINT 'ipx_{tableName}' UNIQUE({ind})) ";
             //var sql = $"CREATE TABLE IF NOT EXISTS {tableName} ({columnSql} , PRIMARY KEY({ind})) ";
 
+            string resp = "";
             using (var conn = GetConnection()) {
-                conn.Execute(sql);
+                int r = conn.Execute(sql);
+                if (r >-1)
+                    resp = sql;
                 conn.Close();
             }
 
-            return true;
+            return resp;
         }
 
         public string ImportColumn(DataColumn dataColumn) {

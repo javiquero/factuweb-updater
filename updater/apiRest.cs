@@ -20,28 +20,6 @@ namespace updaterFactuWeb {
 
 			_httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiToken);
 
-			// CREATE
-			//string _json = "{CODCLI: 556, NOCCLI:'NOMBRE DE PRUEBA 556'}";
-			//bool response = Post("fcli", _json);
-
-			// FIND
-			//dynamic result = Get("fcli", "CODCLI=556");
-			//Console.WriteLine(result);
-
-
-			//POST /:model
-			//DELETE /:model /:id
-			//GET /:model /:id
-			//GET /:model
-			//	?where ={ "name":{ "contains":"theodore"} }
-			//	?limit = 100
-			//	?skip=30
-			//	?sort=lastName%20ASC
-			//	? select = name, age
-			//	?omit=favoriteColor,address
-			//PATCH /:model/:id
-
-			// UPLOAD /image/upload/:codart 
 		}
 
 		public DataTable listModels() {
@@ -57,57 +35,34 @@ namespace updaterFactuWeb {
 			}
 		}
 
-		public DataTable SELECT(string model, string query = "" ) {
+		public bool EXECUTE(string query) {
 			try {
-				model = model.Replace("_", "").ToLower();
-				if (query != "" && !query.StartsWith("?")) query = "?" + query;
-				string json = this.Get(model, query);
-				json = "{ \""+ model + "\": " + json + "}";
-				DataSet dataSet = JsonConvert.DeserializeObject<DataSet>(json.Replace("\n",""));
-				DataTable dataTable = dataSet.Tables[model];
-				return dataTable;
-				//return JsontoDataTable(json);
-			} catch (Exception ex) {
-				throw (ex);				
-			}
-		}
-		//"{ \"fage\": {\n  \"createdAt\": 1594047281590,\n  \"updatedAt\": 1594047281590,\n  \"id\": 65,\n  \"CODAGE\": 99,\n  \"TEMAGE\": \"\",\n  \"EMAAGE\": \"\",\n  \"TEPAGE\": \"\",\n  \"NOMAGE\": \"Cliente Nuevo\"\n}}"
-	public bool INSERT(string model, DataRow data) {
-			try {
-				model = model.Replace("_", "").ToLower();
-				string json = this.DataRowToJSON(data);
-				//string json = "{";
-				//foreach (DataColumn col in data.Table.Columns) {
-				//	if (json != "{") json += ", ";
-				//	json += "\"" + col.ColumnName + "\":";
-				//	if (col.DataType == System.Type.GetType("System.String")) {
-				//		json += "\"" + data[col.ColumnName] + "\"";
-				//	} else {
-				//		json += data[col.ColumnName].ToString().Replace(",",".");
-				//	}
-				//}
-
-				//json += "}";
-				//string json = JsonConvert.SerializeObject(data., Formatting.Indented);
-				return this.Post(model, json);
-			} catch (Exception ex) {
-				throw(ex);
-			}
-		}
-
-		public bool INSERT(string model, string json) {
-			try {
-				model = model.Replace("_", "").ToLower();
-				return this.Post(model, json);
+				return this.Post("db/run", "{query: \"" + query + "\"}");
 			} catch (Exception ex) {
 				throw (ex);
 			}
 		}
 
+		//public string PHOTOS(DataTable data) {
+		//	try {
+		//		string json = this.DataTableToJSON(data);
+		//		return this.PostWithResponse("db/photos", "{ data:" + json + "}");
+		//	} catch (Exception ex) {
+		//		throw (ex);
+		//	}
+		//}
+
+		public bool INSERT(string model, DataRow data) {
+			try {
+				string json = this.DataRowToJSON(data);				
+				return this.Post("db/add", "{model: \"" + model + "\", data:" + json+ "}");
+			} catch (Exception ex) {
+				throw(ex);
+			}
+		}
+				
 		public bool DESTROY(string model) {
 			try {
-				model = model.Replace("_", "").ToLower();
-
 				string json = this.Get("models/" + model + "/destroy", "");
 				return true;
 			} catch (Exception ex) {
@@ -117,50 +72,7 @@ namespace updaterFactuWeb {
 
 		public bool DELETE(string model, string id) {
 			try {
-				model = model.Replace("_", "").ToLower();
-				bool result = this.Delete(model, id);
-				return result;
-			} catch (Exception ex) {
-				throw (ex);
-			}
-		}
-
-		public bool REPLACE(string model, string where, string json) {
-			try {
-				model = model.Replace("_", "").ToLower();
-				DataTable dt = this.SELECT(model, where);
-				if (dt.Rows.Count > 0) {
-					bool result = this.Patch(model, dt.Rows[0][dt.Rows[0].Table.Columns["id"].Ordinal].ToString() , json);
-					return result;
-				}
-								return false;
-			} catch (Exception ex) {
-				throw ex;
-			}
-		}
-		public bool REPLACE(string model, string where, DataRow data) {
-			try {
-				model = model.Replace("_", "").ToLower();
-
-				DataTable dt = this.SELECT(model, where);
-				if (dt.Rows.Count > 0) {
-					string json = this.DataRowToJSON(data);// "{";
-					//foreach (DataColumn col in data.Table.Columns) {
-					//	if (json != "{")
-					//		json += ", ";
-					//	json += "\"" + col.ColumnName + "\":";
-					//	if (col.DataType == System.Type.GetType("System.String")) {
-					//		json += "\"" + data[col.ColumnName] + "\"";
-					//	} else {
-					//		json += data[col.ColumnName].ToString().Replace(",", ".");
-					//	}
-					//}
-					//json += "}";
-					bool result = this.Patch(model, dt.Rows[0][dt.Rows[0].Table.Columns["id"].Ordinal].ToString(), json);
-					return result;
-				}
-				return false;
-
+				return this.Post("db/del", "{model: \"" + model + "\", data:\"" + id + "\"}");
 			} catch (Exception ex) {
 				throw (ex);
 			}
@@ -196,7 +108,6 @@ namespace updaterFactuWeb {
 							}
 						}
 					} catch (Exception ex ) {
-
 						throw ex;
 					}
 					
@@ -205,7 +116,7 @@ namespace updaterFactuWeb {
 			return false;
 		}
 
-		private string CalculateMD5(string filename) {
+		public string CalculateMD5(string filename) {
 			using (var md5 = System.Security.Cryptography.MD5.Create()) {
 				using (var stream = File.OpenRead(filename)) {
 					var hash = md5.ComputeHash(stream);
@@ -213,6 +124,18 @@ namespace updaterFactuWeb {
 				}
 			}
 		}
+
+		private string DataTableToJSON(DataTable dt) {
+			string response = "[";
+			foreach (DataRow dr in dt.Rows) {
+				if (response != "[")
+					response += ",";
+				response += this.DataRowToJSON(dr);
+			}
+			response += "]";
+			return response;
+		}
+
 		private string DataRowToJSON(DataRow row) {
 			string[] types = new string[row.Table.Columns.Count];
 
@@ -234,7 +157,7 @@ namespace updaterFactuWeb {
 					DateTime t = DateTime.ParseExact(row.ItemArray[i].ToString(), "dd/MM/yyyy H:mm:ss",
 						System.Globalization.CultureInfo.InvariantCulture);
 					response += "'" + t.ToString("yyyy-MM-dd HH:mm:ss") + "'";
-				} else if (types[i] == "oleobject") {
+				} else if (types[i] == "oleobject" || types[i].Contains("Byte")) {
 					response += "''";
 				} else {
 					response += row.ItemArray[i].ToString().Replace(",", ".");
@@ -255,57 +178,31 @@ namespace updaterFactuWeb {
 				throw new Exception($"Failed to GET data: ({result.StatusCode}): {returnValue}");
 			}
 		}
-		private bool Post(string model, string json) {
-			string _url = $"{apiURL}{model}";
+
+		//private string PostWithResponse(string url, string json) {
+		//	string _url = $"{apiURL + url}";
+		//	dynamic jsonObject = JsonConvert.DeserializeObject(json);
+		//	using (var content = new StringContent(JsonConvert.SerializeObject(jsonObject), System.Text.Encoding.UTF8, "application/json")) {
+		//		HttpResponseMessage result = _httpClient.PostAsync(_url, content).Result;
+		//		string returnValue = result.Content.ReadAsStringAsync().Result;
+		//		if (result.StatusCode == System.Net.HttpStatusCode.OK)
+		//			return returnValue;
+		//		throw new Exception($"Failed to POST data: ({result.StatusCode}): {returnValue}");
+		//	}
+		//}
+
+		private bool Post( string url,string json) {
+			string _url = $"{apiURL+url}";
 			dynamic jsonObject = JsonConvert.DeserializeObject(json);
 			using (var content = new StringContent(JsonConvert.SerializeObject(jsonObject), System.Text.Encoding.UTF8, "application/json")) {
-				HttpResponseMessage result = _httpClient.PostAsync (_url, content).Result;
+				HttpResponseMessage result = _httpClient.PostAsync(_url, content).Result;
 				if (result.StatusCode == System.Net.HttpStatusCode.OK)
 					return true;
 				string returnValue = result.Content.ReadAsStringAsync().Result;
 				throw new Exception($"Failed to POST data: ({result.StatusCode}): {returnValue}");
 			}
 		}
-		private bool Delete(string model, string id) {
-			string _url = $"{apiURL}{model}/{id}";
-			HttpResponseMessage result = _httpClient.DeleteAsync(_url).Result;
-				if (result.StatusCode == System.Net.HttpStatusCode.OK)
-					return true;
-				string returnValue = result.Content.ReadAsStringAsync().Result;
-				throw new Exception($"Failed to DELETE data: ({result.StatusCode}): {returnValue}");			
-		}
-		private bool Patch(string model,string id, string json) {
-			string _url = $"{apiURL}{model}/{id}";
-			dynamic jsonObject = JsonConvert.DeserializeObject(json);
-			using (var content = new StringContent(JsonConvert.SerializeObject(jsonObject), System.Text.Encoding.UTF8, "application/json")) {
-				HttpResponseMessage result = PatchAsync(_url, content).Result;
-				 if (result.StatusCode == System.Net.HttpStatusCode.OK)
-					return true;
-				string returnValue = result.Content.ReadAsStringAsync().Result;
-				throw new Exception($"Failed to PATCH data: ({result.StatusCode}): {returnValue}");
-			}
-		}
-
-		private async Task<HttpResponseMessage> PatchAsync( string UriString, HttpContent iContent) {
-			Uri requestUri = new Uri(UriString);
-			var method = new HttpMethod("PATCH");
-			var request = new HttpRequestMessage(method, requestUri) {
-				Content = iContent
-			};
-
-			HttpResponseMessage response = new HttpResponseMessage();
-			try {
-				response = await _httpClient.SendAsync(request);
-			} catch (TaskCanceledException e) {
-				Console.WriteLine("ERROR: " + e.ToString());
-				throw e;
-			}
-
-			return response;
-		}
-
-
-
+		
 		private void uploadfile(string address, string codart, string md5, string filePath) {
 			string _url = $"{apiURL}{address}";
 			using (WebClient client = new WebClient()) {
@@ -332,22 +229,5 @@ namespace updaterFactuWeb {
 
 			}
 		}
-
-		//private async Task<System.IO.Stream> Upload(string actionUrl, string paramString, Stream paramFileStream, byte[] paramFileBytes) {
-		//	HttpContent stringContent = new StringContent(paramString);
-		//	HttpContent fileStreamContent = new StreamContent(paramFileStream);
-		//	HttpContent bytesContent = new ByteArrayContent(paramFileBytes);
-		//	using (var client = new HttpClient())
-		//	using (var formData = new MultipartFormDataContent()) {
-		//		formData.Add(stringContent, "param1", "param1");
-		//		formData.Add(fileStreamContent, "file1", "file1");
-		//		formData.Add(bytesContent, "file2", "file2");
-		//		var response = await client.PostAsync(actionUrl, formData);
-		//		if (!response.IsSuccessStatusCode) {
-		//			return null;
-		//		}
-		//		return await response.Content.ReadAsStreamAsync();
-		//	}
-		//}
 	}
 }

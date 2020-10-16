@@ -144,7 +144,11 @@ namespace updaterFactuWeb {
 		}
 		void u_ChangePercent(object sender, UpdateTaskResponse response) {
 			//if (progressBar1.Value != response.Value) { progressBar1.Value = response.Value; }
-			progressBar1.Invoke((Action)(() => progressBar1.Value = response.Value));
+			if (response.Value > progressBar1.Maximum) {
+				progressBar1.Invoke((Action)(() => progressBar1.Value = progressBar1.Maximum));
+			} else {
+				progressBar1.Invoke((Action)(() => progressBar1.Value = response.Value));
+			}
 		}
 		void u_OnFinishUpdate(object sender, UpdateTaskResponse response) {
 			button7.Enabled = true;

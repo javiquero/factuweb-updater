@@ -6,9 +6,10 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Data;
 using System.IO;
+using System.Net.NetworkInformation;
 
 namespace updaterFactuWeb {
-	class apiRest {
+    internal class apiRest : IDisposable {
 		private HttpClient _httpClient = new HttpClient();
 		private string apiToken;
 		private string apiURL;
@@ -19,7 +20,33 @@ namespace updaterFactuWeb {
 			apiURL = Properties.Settings.Default.api;
 
 			_httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiToken);
+		}
 
+		public DataTable listOrders() {
+			try {
+				string json = this.Get("getorders", "");
+				json = @"{'ordersList': " + json + "}";
+				DataSet dataSet = JsonConvert.DeserializeObject<DataSet>(json);
+				DataTable dataTable = dataSet.Tables["ordersList"];
+
+
+
+
+				return dataTable;
+			} catch (Exception ex) {
+				Logger.log(ex);
+				throw;
+			}
+		}
+		public string listOrders2() {
+			try {
+				string json = this.Get("getorders", "");
+				json = @"{'data': " + json + "}";
+				return json;
+			} catch (Exception ex) {
+				Logger.log(ex);
+				throw;
+			}
 		}
 
 		public DataTable listModels() {
@@ -29,9 +56,9 @@ namespace updaterFactuWeb {
 				DataSet dataSet = JsonConvert.DeserializeObject<DataSet>(json);
 				DataTable dataTable = dataSet.Tables["modelsList"];
 				return dataTable;
-				//return JsontoDataTable(json);
 			} catch (Exception ex) {
-				throw (ex);
+				Logger.log(ex);
+				throw ;
 			}
 		}
 
@@ -39,25 +66,18 @@ namespace updaterFactuWeb {
 			try {
 				return this.Post("db/run", "{query: \"" + query + "\"}");
 			} catch (Exception ex) {
-				throw (ex);
+				Logger.log(ex);
+				throw;
 			}
 		}
 
-		//public string PHOTOS(DataTable data) {
-		//	try {
-		//		string json = this.DataTableToJSON(data);
-		//		return this.PostWithResponse("db/photos", "{ data:" + json + "}");
-		//	} catch (Exception ex) {
-		//		throw (ex);
-		//	}
-		//}
-
 		public bool INSERT(string model, DataRow data) {
 			try {
-				string json = this.DataRowToJSON(data);				
+				string json = DataRowToJSON(data);				
 				return this.Post("db/add", "{model: \"" + model + "\", data:" + json+ "}");
 			} catch (Exception ex) {
-				throw(ex);
+				Logger.log(ex);
+				throw;
 			}
 		}
 				
@@ -66,7 +86,8 @@ namespace updaterFactuWeb {
 				string json = this.Get("models/" + model + "/destroy", "");
 				return true;
 			} catch (Exception ex) {
-				throw (ex);
+				Logger.log(ex);
+				throw;
 			}
 		}
 
@@ -74,7 +95,8 @@ namespace updaterFactuWeb {
 			try {
 				return this.Post("db/del", "{model: \"" + model + "\", data:\"" + id + "\"}");
 			} catch (Exception ex) {
-				throw (ex);
+				Logger.log(ex);
+				throw;
 			}
 		}
 
@@ -85,7 +107,8 @@ namespace updaterFactuWeb {
 						uploadfile("db/upload", path);
 						return true;
 					} catch (Exception ex) {
-						throw (ex);
+						Logger.log(ex);
+						throw;
 					}				
 				}
 			}
@@ -99,24 +122,24 @@ namespace updaterFactuWeb {
 					string extension = Path.GetExtension(path);
 					try {
 						string response = Get("image/upload/exists", "?md5=" + md5 + extension+"&codart=" + codart);
-
 						if (response != "OK") {
 							try {
-								uploadfile("image/upload/" + codart, codart, md5, path);
+								uploadfile("image/upload/" + codart, md5, path);
 							} catch (Exception ex) {
-								throw (ex);
+								Logger.log(ex);
+								throw;
 							}
 						}
 					} catch (Exception ex ) {
-						throw ex;
+						Logger.log(ex);
+						throw;
 					}
-					
 				}
 			}
 			return false;
 		}
 
-		public string CalculateMD5(string filename) {
+		public static string CalculateMD5(string filename) {
 			using (var md5 = System.Security.Cryptography.MD5.Create()) {
 				using (var stream = File.OpenRead(filename)) {
 					var hash = md5.ComputeHash(stream);
@@ -125,28 +148,15 @@ namespace updaterFactuWeb {
 			}
 		}
 
-		private string DataTableToJSON(DataTable dt) {
-			string response = "[";
-			foreach (DataRow dr in dt.Rows) {
-				if (response != "[")
-					response += ",";
-				response += this.DataRowToJSON(dr);
-			}
-			response += "]";
-			return response;
-		}
-
-		private string DataRowToJSON(DataRow row) {
+		private static string DataRowToJSON(DataRow row) {
 			string[] types = new string[row.Table.Columns.Count];
 
 			for (var i = 0; i < row.Table.Columns.Count; i++) {
 				types[i] = row.Table.Columns[i].DataType.ToString();
-				//types[i] = this.GetTypeColumn(model, row.Table.Columns[i].ColumnName);
 			}
 			string response = "{";
 
-			//if (y)
-			//	response += "YEAR: '" + Properties.Settings.Default.year + "'";
+
 			for (var i = 0; i < row.Table.Columns.Count; i++) {
 				if (response != "{")
 					response += ", ";
@@ -174,10 +184,59 @@ namespace updaterFactuWeb {
 					return content;
 					//return JsonConvert.DeserializeObject(content);
 				}
-				string returnValue = result.Content.ReadAsStringAsync().Result;
-				throw new Exception($"Failed to GET data: ({result.StatusCode}): {returnValue}");
+				string returnValue = result.Content.ReadAsStringAsync().Result;				
+				var err = new Exception($"Failed to GET data: ({result.StatusCode}): {returnValue}");
+				Logger.log(err);
+				throw err;
 			}
 		}
+
+		private bool Post( string url,string json) {
+			string _url = $"{apiURL+url}";
+			dynamic jsonObject = JsonConvert.DeserializeObject(json);
+			using (var content = new StringContent(JsonConvert.SerializeObject(jsonObject), System.Text.Encoding.UTF8, "application/json")) {
+				HttpResponseMessage result = _httpClient.PostAsync(_url, content).Result;
+				if (result.StatusCode == System.Net.HttpStatusCode.OK)
+					return true;
+				string returnValue = result.Content.ReadAsStringAsync().Result;
+				var err = new Exception($"Failed to POST data: ({result.StatusCode}): {returnValue}");
+				Logger.log(err);
+				throw err;
+			}
+		}
+		
+		private void uploadfile(string address, string md5, string filePath) {
+			string _url = $"{apiURL}{address}";
+			using (WebClient client = new WebClient()) {
+				client.Headers.Add("Authorization", "Bearer " + apiToken);
+				client.Headers.Add("md5", md5);
+				try {
+					client.UploadFile(_url, filePath);
+				} catch (Exception ex) {
+					Logger.log(ex);
+					throw;
+				}
+				
+			}
+		}
+
+		private void uploadfile(string address, string filePath) {
+			string _url = $"{apiURL}{address}";
+			using (WebClient client = new WebClient()) {
+				client.Headers.Add("Authorization", "Bearer " + apiToken);
+				try {
+					client.UploadFile(_url, filePath);
+				} catch (Exception ex) {
+					Logger.log(ex);
+					throw;
+				}
+
+			}
+		}
+
+        public void Dispose() {
+            throw new NotImplementedException();
+        }
 
 		//private string PostWithResponse(string url, string json) {
 		//	string _url = $"{apiURL + url}";
@@ -191,43 +250,24 @@ namespace updaterFactuWeb {
 		//	}
 		//}
 
-		private bool Post( string url,string json) {
-			string _url = $"{apiURL+url}";
-			dynamic jsonObject = JsonConvert.DeserializeObject(json);
-			using (var content = new StringContent(JsonConvert.SerializeObject(jsonObject), System.Text.Encoding.UTF8, "application/json")) {
-				HttpResponseMessage result = _httpClient.PostAsync(_url, content).Result;
-				if (result.StatusCode == System.Net.HttpStatusCode.OK)
-					return true;
-				string returnValue = result.Content.ReadAsStringAsync().Result;
-				throw new Exception($"Failed to POST data: ({result.StatusCode}): {returnValue}");
-			}
-		}
-		
-		private void uploadfile(string address, string codart, string md5, string filePath) {
-			string _url = $"{apiURL}{address}";
-			using (WebClient client = new WebClient()) {
-				client.Headers.Add("Authorization", "Bearer " + apiToken);
-				client.Headers.Add("md5", md5);
-				try {
-					client.UploadFile(_url, filePath);
-				} catch (Exception ex) {
-					throw (ex);
-				}
-				
-			}
-		}
+		//private static string DataTableToJSON(DataTable dt) {
+		//	string response = "[";
+		//	foreach (DataRow dr in dt.Rows) {
+		//		if (response != "[")
+		//			response += ",";
+		//		response += DataRowToJSON(dr);
+		//	}
+		//	response += "]";
+		//	return response;
+		//}
 
-		private void uploadfile(string address, string filePath) {
-			string _url = $"{apiURL}{address}";
-			using (WebClient client = new WebClient()) {
-				client.Headers.Add("Authorization", "Bearer " + apiToken);
-				try {
-					client.UploadFile(_url, filePath);
-				} catch (Exception ex) {
-					throw (ex);
-				}
-
-			}
-		}
+		//public string PHOTOS(DataTable data) {
+		//	try {
+		//		string json = this.DataTableToJSON(data);
+		//		return this.PostWithResponse("db/photos", "{ data:" + json + "}");
+		//	} catch (Exception ex) {
+		//		throw (ex);
+		//	}
+		//}
 	}
 }

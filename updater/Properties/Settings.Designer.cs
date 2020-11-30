@@ -23,124 +23,198 @@ namespace updaterFactuWeb.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool autoUpdate {
-            get {
-                return ((bool)(this["autoUpdate"]));
+        // Config Incrementales
+            [global::System.Configuration.UserScopedSettingAttribute()]
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.Configuration.DefaultSettingValueAttribute("False")]
+            public bool autoIncrementales {
+                get {
+                    return ((bool)(this["autoIncrementales"]));
+                }
+                set {
+                    this["autoIncrementales"] = value;
+                }
             }
-            set {
-                this["autoUpdate"] = value;
+
+            [global::System.Configuration.UserScopedSettingAttribute()]
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.Configuration.DefaultSettingValueAttribute("3600")]
+            public int timeIncrementales {
+                get {
+                    return ((int)(this["timeIncrementales"]));
+                }
+                set {
+                    this["timeIncrementales"] = value;
+                }
             }
-        }
+
+        // Config Pedidos
+            [global::System.Configuration.UserScopedSettingAttribute()]
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.Configuration.DefaultSettingValueAttribute("False")]
+            public bool autoPedidos {
+                get {
+                    return ((bool)(this["autoPedidos"]));
+                }
+                set {
+                    this["autoPedidos"] = value;
+                }
+            }
+
+            [global::System.Configuration.UserScopedSettingAttribute()]
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.Configuration.DefaultSettingValueAttribute("3600")]
+            public int timePedidos {
+                get {
+                    return ((int)(this["timePedidos"]));
+                }
+                set {
+                    this["timePedidos"] = value;
+                }
+            }
+
+
+        // Config Fotos
+            [global::System.Configuration.UserScopedSettingAttribute()]
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.Configuration.DefaultSettingValueAttribute("False")]
+            public bool autoFotos {
+                get {
+                    return ((bool)(this["autoFotos"]));
+                }
+                set {
+                    this["autoFotos"] = value;
+                }
+            }
+
+            [global::System.Configuration.UserScopedSettingAttribute()]
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.Configuration.DefaultSettingValueAttribute("3600")]
+            public int timeFotos {
+                get {
+                    return ((int)(this["timeFotos"]));
+                }
+                set {
+                    this["timeFotos"] = value;
+                }
+            }
+
+
+        // Config Total
+            [global::System.Configuration.UserScopedSettingAttribute()]
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.Configuration.DefaultSettingValueAttribute("False")]
+            public bool autoTotal {
+                get {
+                    return ((bool)(this["autoTotal"]));
+                }
+                set {
+                    this["autoTotal"] = value;
+                }
+            }
+
+            [global::System.Configuration.UserScopedSettingAttribute()]
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.Configuration.DefaultSettingValueAttribute("01/01/1979 00:00:00")]
+            public string timeTotal {
+                get {
+                    return ((string)(this["timeTotal"]));
+                }
+                set {
+                    this["timeTotal"] = value;
+                }
+            }
+
+
+
+        // Config API
+            [global::System.Configuration.UserScopedSettingAttribute()]
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:1337/api/")]
+            public string api {
+                get {
+                    return ((string)(this["api"]));
+                }
+                set {
+                    this["api"] = value;
+                }
+            }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:1337/api/")]
-        public string api {
-            get {
-                return ((string)(this["api"]));
+            [global::System.Configuration.UserScopedSettingAttribute()]
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.Configuration.DefaultSettingValueAttribute("")]
+            public string token {
+                get {
+                    return ((string)(this["token"]));
+                }
+                set {
+                    this["token"] = value;
+                }
             }
-            set {
-                this["api"] = value;
-            }
-        }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("3600")]
-        public int interval {
-            get {
-                return ((int)(this["interval"]));
+
+        // Config Factusol
+            [global::System.Configuration.UserScopedSettingAttribute()]
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.Configuration.DefaultSettingValueAttribute("C:\\Software DELSOL\\FactuSOL\\Datos\\FS")]
+            public string path {
+                get {
+                    return ((string)(this["path"]));
+                }
+                set {
+                    this["path"] = value;
+                }
             }
-            set {
-                this["interval"] = value;
-            }
-        }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string token {
-            get {
-                return ((string)(this["token"]));
+            [global::System.Configuration.UserScopedSettingAttribute()]
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.Configuration.DefaultSettingValueAttribute("XD1")]
+            public string company {
+                get {
+                    return ((string)(this["company"]));
+                }
+                set {
+                    this["company"] = value;
+                }
             }
-            set {
-                this["token"] = value;
-            }
-        }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Software DELSOL\\FactuSOL\\Datos\\FS")]
-        public string path {
-            get {
-                return ((string)(this["path"]));
+            [global::System.Configuration.UserScopedSettingAttribute()]
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.Configuration.DefaultSettingValueAttribute("2020")]
+            public string year {
+                get {
+                    return ((string)(this["year"]));
+                }
+                set {
+                    this["year"] = value;
+                }
             }
-            set {
-                this["path"] = value;
-            }
-        }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("XD1")]
-        public string company {
-            get {
-                return ((string)(this["company"]));
+
+        // Config global
+            [global::System.Configuration.UserScopedSettingAttribute()]
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.Configuration.DefaultSettingValueAttribute("False")]
+            public bool initmin {
+                get {
+                    return ((bool)(this["initmin"]));
+                }
+                set {
+                    this["initmin"] = value;
+                }
             }
-            set {
-                this["company"] = value;
-            }
-        }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("2020")]
-        public string year {
-            get {
-                return ((string)(this["year"]));
+            [global::System.Configuration.UserScopedSettingAttribute()]
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.Configuration.DefaultSettingValueAttribute(".accdb")]
+            public string dbExtension {
+                get {
+                    return ((string)(this["dbExtension"]));
+                }
+                set {
+                    this["dbExtension"] = value;
+                }
             }
-            set {
-                this["year"] = value;
-            }
-        }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool initmin {
-            get {
-                return ((bool)(this["initmin"]));
-            }
-            set {
-                this["initmin"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(".accdb")]
-        public string dbExtension {
-            get {
-                return ((string)(this["dbExtension"]));
-            }
-            set {
-                this["dbExtension"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("dbCache")]
-        public string dbCacheName {
-            get {
-                return ((string)(this["dbCacheName"]));
-            }
-            set {
-                this["dbCacheName"] = value;
-            }
-        }
     }
 }

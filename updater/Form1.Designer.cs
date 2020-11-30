@@ -27,55 +27,79 @@ namespace updaterFactuWeb {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
-            this.button2 = new System.Windows.Forms.Button();
-            this.label6 = new System.Windows.Forms.Label();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.textBox6 = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.button3 = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.panel4 = new System.Windows.Forms.Panel();
-            this.button4 = new System.Windows.Forms.Button();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
+            this.panelConfigGlobal = new System.Windows.Forms.Panel();
+            this.buttonRemoveCache = new System.Windows.Forms.Button();
+            this.checkBoxInitMin = new System.Windows.Forms.CheckBox();
+            this.checkBoxInitOnStartUp = new System.Windows.Forms.CheckBox();
+            this.dateTimePickerTimeTotal = new System.Windows.Forms.DateTimePicker();
             this.label5 = new System.Windows.Forms.Label();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.button5 = new System.Windows.Forms.Button();
-            this.linkLabel2 = new System.Windows.Forms.LinkLabel();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
-            this.panelActions = new System.Windows.Forms.Panel();
-            this.panelSave = new System.Windows.Forms.Panel();
+            this.labelIntervaloIncrementales = new System.Windows.Forms.Label();
+            this.buttonStartPhotos = new System.Windows.Forms.Button();
+            this.linkOpenApplicationFolder = new System.Windows.Forms.LinkLabel();
+            this.buttonStartTotal = new System.Windows.Forms.Button();
+            this.buttonStartIncremental = new System.Windows.Forms.Button();
+            this.buttonStartOrders = new System.Windows.Forms.Button();
+            this.groupIncrementales = new System.Windows.Forms.GroupBox();
+            this.labelStatusIncremental = new System.Windows.Forms.Label();
+            this.progressBarIncremental = new System.Windows.Forms.ProgressBar();
+            this.textBoxTimeIntervalo = new System.Windows.Forms.NumericUpDown();
+            this.checkBoxAutoIncrementales = new System.Windows.Forms.CheckBox();
+            this.groupBoxFotos = new System.Windows.Forms.GroupBox();
+            this.labelStatusFotos = new System.Windows.Forms.Label();
+            this.textBoxTimeFotos = new System.Windows.Forms.NumericUpDown();
+            this.progressBarFotos = new System.Windows.Forms.ProgressBar();
+            this.checkBoxAutoFotos = new System.Windows.Forms.CheckBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.groupBoxPedidos = new System.Windows.Forms.GroupBox();
+            this.labelStatusPedidos = new System.Windows.Forms.Label();
+            this.progressBarPedidos = new System.Windows.Forms.ProgressBar();
+            this.textBoxTimePedidos = new System.Windows.Forms.NumericUpDown();
+            this.checkBoxAutoPedidos = new System.Windows.Forms.CheckBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.groupBoxConfigFactusol = new System.Windows.Forms.GroupBox();
+            this.textBoxYearFactusol = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.textBoxEmpresaFactusol = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.buttonExploreRutaFactusol = new System.Windows.Forms.Button();
+            this.textBoxRutaFactusol = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.groupBoxConfigApi = new System.Windows.Forms.GroupBox();
+            this.textBoxConfigTokenApi = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.textBoxConfigDirApi = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.groupBoxTotal = new System.Windows.Forms.GroupBox();
+            this.labelStatusTotal = new System.Windows.Forms.Label();
+            this.progressBarTotal = new System.Windows.Forms.ProgressBar();
+            this.checkBoxAutoTotal = new System.Windows.Forms.CheckBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.timerIncrementales = new System.Windows.Forms.Timer(this.components);
+            this.timerTotal = new System.Windows.Forms.Timer(this.components);
+            this.timerPedidos = new System.Windows.Forms.Timer(this.components);
+            this.timerFotos = new System.Windows.Forms.Timer(this.components);
+            this.labelPathExists = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
-            this.panel2.SuspendLayout();
-            this.panel3.SuspendLayout();
-            this.panel4.SuspendLayout();
-            this.panel1.SuspendLayout();
-            this.panelActions.SuspendLayout();
-            this.panelSave.SuspendLayout();
+            this.panelConfigGlobal.SuspendLayout();
+            this.groupIncrementales.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.textBoxTimeIntervalo)).BeginInit();
+            this.groupBoxFotos.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.textBoxTimeFotos)).BeginInit();
+            this.groupBoxPedidos.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.textBoxTimePedidos)).BeginInit();
+            this.groupBoxConfigFactusol.SuspendLayout();
+            this.groupBoxConfigApi.SuspendLayout();
+            this.groupBoxTotal.SuspendLayout();
             this.SuspendLayout();
             // 
             // pictureBox1
@@ -86,7 +110,7 @@ namespace updaterFactuWeb {
             this.pictureBox1.Location = new System.Drawing.Point(2, 16);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(498, 190);
+            this.pictureBox1.Size = new System.Drawing.Size(1001, 190);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 6;
             this.pictureBox1.TabStop = false;
@@ -95,17 +119,13 @@ namespace updaterFactuWeb {
             // 
             this.linkLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Enabled = false;
-            this.linkLabel1.Location = new System.Drawing.Point(13, 712);
+            this.linkLabel1.Location = new System.Drawing.Point(13, 719);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(54, 18);
             this.linkLabel1.TabIndex = 14;
             this.linkLabel1.TabStop = true;
             this.linkLabel1.Text = "Ver log";
-            // 
-            // timer1
-            // 
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // contextMenuStrip1
             // 
@@ -153,382 +173,634 @@ namespace updaterFactuWeb {
             this.notifyIcon1.Visible = true;
             this.notifyIcon1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseClick);
             // 
-            // button2
-            // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(10, 2);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(483, 39);
-            this.button2.TabIndex = 17;
-            this.button2.Text = "Guardar";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // label6
-            // 
-            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(7, 742);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(0, 18);
-            this.label6.TabIndex = 18;
-            // 
             // folderBrowserDialog1
             // 
             this.folderBrowserDialog1.Description = "Factusol Data folder";
             this.folderBrowserDialog1.RootFolder = System.Environment.SpecialFolder.MyComputer;
             this.folderBrowserDialog1.ShowNewFolderButton = false;
             // 
-            // panel2
+            // panelConfigGlobal
             // 
-            this.panel2.Controls.Add(this.textBox6);
-            this.panel2.Controls.Add(this.label8);
-            this.panel2.Controls.Add(this.textBox5);
-            this.panel2.Controls.Add(this.label7);
-            this.panel2.Controls.Add(this.button3);
-            this.panel2.Controls.Add(this.textBox1);
-            this.panel2.Controls.Add(this.label1);
-            this.panel2.Location = new System.Drawing.Point(2, 237);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(495, 104);
-            this.panel2.TabIndex = 22;
+            this.panelConfigGlobal.Controls.Add(this.buttonRemoveCache);
+            this.panelConfigGlobal.Controls.Add(this.checkBoxInitMin);
+            this.panelConfigGlobal.Controls.Add(this.checkBoxInitOnStartUp);
+            this.panelConfigGlobal.Location = new System.Drawing.Point(4, 644);
+            this.panelConfigGlobal.Name = "panelConfigGlobal";
+            this.panelConfigGlobal.Size = new System.Drawing.Size(994, 75);
+            this.panelConfigGlobal.TabIndex = 24;
             // 
-            // textBox6
+            // buttonRemoveCache
             // 
-            this.textBox6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox6.Location = new System.Drawing.Point(282, 72);
-            this.textBox6.Margin = new System.Windows.Forms.Padding(4);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(200, 24);
-            this.textBox6.TabIndex = 25;
-            this.textBox6.TextChanged += new System.EventHandler(this.textBox6_TextChanged);
+            this.buttonRemoveCache.BackColor = System.Drawing.Color.Red;
+            this.buttonRemoveCache.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonRemoveCache.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonRemoveCache.ForeColor = System.Drawing.Color.White;
+            this.buttonRemoveCache.Location = new System.Drawing.Point(856, 27);
+            this.buttonRemoveCache.Name = "buttonRemoveCache";
+            this.buttonRemoveCache.Size = new System.Drawing.Size(125, 38);
+            this.buttonRemoveCache.TabIndex = 21;
+            this.buttonRemoveCache.Text = "Borrar cache";
+            this.buttonRemoveCache.UseVisualStyleBackColor = false;
+            this.buttonRemoveCache.Click += new System.EventHandler(this.buttonRemoveCache_Click);
             // 
-            // label8
+            // checkBoxInitMin
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(282, 50);
-            this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(34, 18);
-            this.label8.TabIndex = 26;
-            this.label8.Text = "Año";
+            this.checkBoxInitMin.AutoSize = true;
+            this.checkBoxInitMin.Location = new System.Drawing.Point(12, 43);
+            this.checkBoxInitMin.Name = "checkBoxInitMin";
+            this.checkBoxInitMin.Size = new System.Drawing.Size(145, 22);
+            this.checkBoxInitMin.TabIndex = 20;
+            this.checkBoxInitMin.Text = "Iniciar minimizado";
+            this.checkBoxInitMin.UseVisualStyleBackColor = true;
+            this.checkBoxInitMin.CheckedChanged += new System.EventHandler(this.checkBoxInitMin_CheckedChanged);
             // 
-            // textBox5
+            // checkBoxInitOnStartUp
             // 
-            this.textBox5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox5.Location = new System.Drawing.Point(10, 72);
-            this.textBox5.Margin = new System.Windows.Forms.Padding(4);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(200, 24);
-            this.textBox5.TabIndex = 23;
-            this.textBox5.TextChanged += new System.EventHandler(this.textBox5_TextChanged);
+            this.checkBoxInitOnStartUp.AutoSize = true;
+            this.checkBoxInitOnStartUp.Location = new System.Drawing.Point(12, 15);
+            this.checkBoxInitOnStartUp.Name = "checkBoxInitOnStartUp";
+            this.checkBoxInitOnStartUp.Size = new System.Drawing.Size(270, 22);
+            this.checkBoxInitOnStartUp.TabIndex = 18;
+            this.checkBoxInitOnStartUp.Text = "Iniciar aplicación al inicio de windows";
+            this.checkBoxInitOnStartUp.UseVisualStyleBackColor = true;
+            this.checkBoxInitOnStartUp.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
             // 
-            // label7
+            // dateTimePickerTimeTotal
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(10, 50);
-            this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(68, 18);
-            this.label7.TabIndex = 24;
-            this.label7.Text = "Empresa";
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(444, 21);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(38, 26);
-            this.button3.TabIndex = 22;
-            this.button3.Text = "...";
-            this.button3.UseVisualStyleBackColor = true;
-            // 
-            // textBox1
-            // 
-            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox1.Location = new System.Drawing.Point(11, 22);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(4);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(433, 24);
-            this.textBox1.TabIndex = 20;
-            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(11, 0);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(141, 18);
-            this.label1.TabIndex = 21;
-            this.label1.Text = "Ruta datos Factusol";
-            // 
-            // panel3
-            // 
-            this.panel3.Controls.Add(this.textBox3);
-            this.panel3.Controls.Add(this.label3);
-            this.panel3.Controls.Add(this.textBox2);
-            this.panel3.Controls.Add(this.label2);
-            this.panel3.Location = new System.Drawing.Point(2, 362);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(495, 104);
-            this.panel3.TabIndex = 23;
-            // 
-            // textBox3
-            // 
-            this.textBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox3.Location = new System.Drawing.Point(10, 74);
-            this.textBox3.Margin = new System.Windows.Forms.Padding(4);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(472, 24);
-            this.textBox3.TabIndex = 14;
-            this.textBox3.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(9, 51);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(76, 18);
-            this.label3.TabIndex = 16;
-            this.label3.Text = "Token API";
-            // 
-            // textBox2
-            // 
-            this.textBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox2.Location = new System.Drawing.Point(11, 23);
-            this.textBox2.Margin = new System.Windows.Forms.Padding(4);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(471, 24);
-            this.textBox2.TabIndex = 13;
-            this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(9, 1);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(97, 18);
-            this.label2.TabIndex = 15;
-            this.label2.Text = "Dirección API";
-            // 
-            // panel4
-            // 
-            this.panel4.Controls.Add(this.button4);
-            this.panel4.Controls.Add(this.checkBox3);
-            this.panel4.Controls.Add(this.checkBox2);
-            this.panel4.Controls.Add(this.panel1);
-            this.panel4.Controls.Add(this.checkBox1);
-            this.panel4.Location = new System.Drawing.Point(2, 483);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(495, 169);
-            this.panel4.TabIndex = 24;
-            // 
-            // button4
-            // 
-            this.button4.BackColor = System.Drawing.Color.Red;
-            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button4.ForeColor = System.Drawing.Color.White;
-            this.button4.Location = new System.Drawing.Point(357, 120);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(125, 38);
-            this.button4.TabIndex = 21;
-            this.button4.Text = "Borrar datos";
-            this.button4.UseVisualStyleBackColor = false;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
-            // 
-            // checkBox3
-            // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(9, 136);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(145, 22);
-            this.checkBox3.TabIndex = 20;
-            this.checkBox3.Text = "Iniciar minimizado";
-            this.checkBox3.UseVisualStyleBackColor = true;
-            this.checkBox3.CheckedChanged += new System.EventHandler(this.checkBox3_CheckedChanged);
-            // 
-            // checkBox2
-            // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(10, 108);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(270, 22);
-            this.checkBox2.TabIndex = 18;
-            this.checkBox2.Text = "Iniciar aplicación al inicio de windows";
-            this.checkBox2.UseVisualStyleBackColor = true;
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.dateTimePicker1);
-            this.panel1.Controls.Add(this.label9);
-            this.panel1.Controls.Add(this.label4);
-            this.panel1.Controls.Add(this.label5);
-            this.panel1.Controls.Add(this.textBox4);
-            this.panel1.Location = new System.Drawing.Point(9, 30);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(458, 72);
-            this.panel1.TabIndex = 19;
-            // 
-            // dateTimePicker1
-            // 
-            this.dateTimePicker1.CustomFormat = "HH:mm";
-            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimePicker1.Location = new System.Drawing.Point(171, 35);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.ShowUpDown = true;
-            this.dateTimePicker1.Size = new System.Drawing.Size(97, 24);
-            this.dateTimePicker1.TabIndex = 6;
-            this.dateTimePicker1.Value = new System.DateTime(2020, 7, 7, 20, 42, 0, 0);
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(7, 4);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(191, 18);
-            this.label9.TabIndex = 5;
-            this.label9.Text = "Copias incrementales cada:";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(7, 38);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(157, 18);
-            this.label4.TabIndex = 2;
-            this.label4.Text = "Copia total diaria a las:";
+            this.dateTimePickerTimeTotal.CustomFormat = "HH:mm";
+            this.dateTimePickerTimeTotal.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTimePickerTimeTotal.Location = new System.Drawing.Point(74, 64);
+            this.dateTimePickerTimeTotal.Name = "dateTimePickerTimeTotal";
+            this.dateTimePickerTimeTotal.ShowUpDown = true;
+            this.dateTimePickerTimeTotal.Size = new System.Drawing.Size(97, 24);
+            this.dateTimePickerTimeTotal.TabIndex = 6;
+            this.dateTimePickerTimeTotal.Value = new System.DateTime(2020, 7, 7, 20, 42, 0, 0);
+            this.dateTimePickerTimeTotal.ValueChanged += new System.EventHandler(this.dateTimePickerTimeTotal_ValueChanged);
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(274, 4);
+            this.label5.Location = new System.Drawing.Point(177, 67);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(77, 18);
+            this.label5.Size = new System.Drawing.Size(65, 18);
             this.label5.TabIndex = 3;
-            this.label5.Text = "segundos.";
+            this.label5.Text = "minutos.";
             // 
-            // textBox4
+            // labelIntervaloIncrementales
             // 
-            this.textBox4.Location = new System.Drawing.Point(204, 1);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(64, 24);
-            this.textBox4.TabIndex = 4;
-            this.textBox4.Text = "0";
-            this.textBox4.TextChanged += new System.EventHandler(this.textBox4_TextChanged);
+            this.labelIntervaloIncrementales.AutoSize = true;
+            this.labelIntervaloIncrementales.Location = new System.Drawing.Point(23, 67);
+            this.labelIntervaloIncrementales.Name = "labelIntervaloIncrementales";
+            this.labelIntervaloIncrementales.Size = new System.Drawing.Size(67, 18);
+            this.labelIntervaloIncrementales.TabIndex = 5;
+            this.labelIntervaloIncrementales.Text = "Intervalo:";
             // 
-            // checkBox1
+            // buttonStartPhotos
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(10, 3);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(209, 22);
-            this.checkBox1.TabIndex = 17;
-            this.checkBox1.Text = "Actualizar automáticamente";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
-            // 
-            // progressBar1
-            // 
-            this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.buttonStartPhotos.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBar1.Location = new System.Drawing.Point(0, 767);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(501, 10);
-            this.progressBar1.TabIndex = 25;
-            this.progressBar1.Visible = false;
+            this.buttonStartPhotos.Location = new System.Drawing.Point(302, 35);
+            this.buttonStartPhotos.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonStartPhotos.Name = "buttonStartPhotos";
+            this.buttonStartPhotos.Size = new System.Drawing.Size(180, 50);
+            this.buttonStartPhotos.TabIndex = 26;
+            this.buttonStartPhotos.Text = "Actualizar ahora";
+            this.buttonStartPhotos.UseVisualStyleBackColor = true;
+            this.buttonStartPhotos.Click += new System.EventHandler(this.buttonStartPhotos_Click);
             // 
-            // button5
+            // linkOpenApplicationFolder
             // 
-            this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.linkOpenApplicationFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.linkOpenApplicationFolder.AutoSize = true;
+            this.linkOpenApplicationFolder.Location = new System.Drawing.Point(427, 719);
+            this.linkOpenApplicationFolder.Name = "linkOpenApplicationFolder";
+            this.linkOpenApplicationFolder.Size = new System.Drawing.Size(196, 18);
+            this.linkOpenApplicationFolder.TabIndex = 27;
+            this.linkOpenApplicationFolder.TabStop = true;
+            this.linkOpenApplicationFolder.Text = "Abrir carpeta de la aplicación";
+            this.linkOpenApplicationFolder.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkOpenApplicationFolder_LinkClicked);
+            // 
+            // buttonStartTotal
+            // 
+            this.buttonStartTotal.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button5.Location = new System.Drawing.Point(333, 4);
-            this.button5.Margin = new System.Windows.Forms.Padding(4);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(157, 39);
-            this.button5.TabIndex = 26;
-            this.button5.Text = "Fotos";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
+            this.buttonStartTotal.Location = new System.Drawing.Point(302, 33);
+            this.buttonStartTotal.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonStartTotal.Name = "buttonStartTotal";
+            this.buttonStartTotal.Size = new System.Drawing.Size(180, 55);
+            this.buttonStartTotal.TabIndex = 28;
+            this.buttonStartTotal.Text = "Actualizar ahora";
+            this.buttonStartTotal.UseVisualStyleBackColor = true;
+            this.buttonStartTotal.Click += new System.EventHandler(this.buttonStartTotal_Click);
             // 
-            // linkLabel2
+            // buttonStartIncremental
             // 
-            this.linkLabel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.linkLabel2.AutoSize = true;
-            this.linkLabel2.Location = new System.Drawing.Point(301, 712);
-            this.linkLabel2.Name = "linkLabel2";
-            this.linkLabel2.Size = new System.Drawing.Size(196, 18);
-            this.linkLabel2.TabIndex = 27;
-            this.linkLabel2.TabStop = true;
-            this.linkLabel2.Text = "Abrir carpeta de la aplicación";
-            this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
+            this.buttonStartIncremental.Location = new System.Drawing.Point(302, 33);
+            this.buttonStartIncremental.Name = "buttonStartIncremental";
+            this.buttonStartIncremental.Size = new System.Drawing.Size(180, 52);
+            this.buttonStartIncremental.TabIndex = 29;
+            this.buttonStartIncremental.Text = "Actualizar ahora";
+            this.buttonStartIncremental.UseVisualStyleBackColor = true;
+            this.buttonStartIncremental.Click += new System.EventHandler(this.buttonStartIncremental_Click);
             // 
-            // button6
+            // buttonStartOrders
             // 
-            this.button6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.buttonStartOrders.Location = new System.Drawing.Point(302, 33);
+            this.buttonStartOrders.Name = "buttonStartOrders";
+            this.buttonStartOrders.Size = new System.Drawing.Size(180, 52);
+            this.buttonStartOrders.TabIndex = 30;
+            this.buttonStartOrders.Text = "Descargar ahora";
+            this.buttonStartOrders.UseVisualStyleBackColor = true;
+            this.buttonStartOrders.Click += new System.EventHandler(this.buttonStartOrders_Click);
+            // 
+            // groupIncrementales
+            // 
+            this.groupIncrementales.Controls.Add(this.labelStatusIncremental);
+            this.groupIncrementales.Controls.Add(this.progressBarIncremental);
+            this.groupIncrementales.Controls.Add(this.textBoxTimeIntervalo);
+            this.groupIncrementales.Controls.Add(this.checkBoxAutoIncrementales);
+            this.groupIncrementales.Controls.Add(this.label5);
+            this.groupIncrementales.Controls.Add(this.buttonStartIncremental);
+            this.groupIncrementales.Controls.Add(this.labelIntervaloIncrementales);
+            this.groupIncrementales.Location = new System.Drawing.Point(2, 366);
+            this.groupIncrementales.Name = "groupIncrementales";
+            this.groupIncrementales.Size = new System.Drawing.Size(495, 121);
+            this.groupIncrementales.TabIndex = 32;
+            this.groupIncrementales.TabStop = false;
+            this.groupIncrementales.Text = "Actualizaciones incrementales";
+            // 
+            // labelStatusIncremental
+            // 
+            this.labelStatusIncremental.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelStatusIncremental.AutoSize = true;
+            this.labelStatusIncremental.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelStatusIncremental.Location = new System.Drawing.Point(15, 92);
+            this.labelStatusIncremental.Name = "labelStatusIncremental";
+            this.labelStatusIncremental.Size = new System.Drawing.Size(0, 15);
+            this.labelStatusIncremental.TabIndex = 32;
+            // 
+            // progressBarIncremental
+            // 
+            this.progressBarIncremental.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button6.Location = new System.Drawing.Point(166, 4);
-            this.button6.Margin = new System.Windows.Forms.Padding(4);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(161, 39);
-            this.button6.TabIndex = 28;
-            this.button6.Text = "Total";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
+            this.progressBarIncremental.Location = new System.Drawing.Point(0, 111);
+            this.progressBarIncremental.Name = "progressBarIncremental";
+            this.progressBarIncremental.Size = new System.Drawing.Size(497, 10);
+            this.progressBarIncremental.Step = 1;
+            this.progressBarIncremental.TabIndex = 31;
             // 
-            // button7
+            // textBoxTimeIntervalo
             // 
-            this.button7.Location = new System.Drawing.Point(9, 4);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(150, 39);
-            this.button7.TabIndex = 29;
-            this.button7.Text = "Incremental";
-            this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.button7_Click);
+            this.textBoxTimeIntervalo.Location = new System.Drawing.Point(96, 64);
+            this.textBoxTimeIntervalo.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.textBoxTimeIntervalo.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.textBoxTimeIntervalo.Name = "textBoxTimeIntervalo";
+            this.textBoxTimeIntervalo.Size = new System.Drawing.Size(75, 24);
+            this.textBoxTimeIntervalo.TabIndex = 30;
+            this.textBoxTimeIntervalo.Value = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
+            this.textBoxTimeIntervalo.ValueChanged += new System.EventHandler(this.textBoxTimeIntervalo_ValueChanged);
             // 
-            // panelActions
+            // checkBoxAutoIncrementales
             // 
-            this.panelActions.Controls.Add(this.button5);
-            this.panelActions.Controls.Add(this.button6);
-            this.panelActions.Controls.Add(this.button7);
-            this.panelActions.Location = new System.Drawing.Point(2, 658);
-            this.panelActions.Name = "panelActions";
-            this.panelActions.Size = new System.Drawing.Size(495, 50);
-            this.panelActions.TabIndex = 30;
+            this.checkBoxAutoIncrementales.AutoSize = true;
+            this.checkBoxAutoIncrementales.Location = new System.Drawing.Point(26, 33);
+            this.checkBoxAutoIncrementales.Name = "checkBoxAutoIncrementales";
+            this.checkBoxAutoIncrementales.Size = new System.Drawing.Size(209, 22);
+            this.checkBoxAutoIncrementales.TabIndex = 0;
+            this.checkBoxAutoIncrementales.Text = "Actualizar automáticamente";
+            this.checkBoxAutoIncrementales.UseVisualStyleBackColor = true;
+            this.checkBoxAutoIncrementales.CheckedChanged += new System.EventHandler(this.checkBoxAutoIncrementales_CheckedChanged);
             // 
-            // panelSave
+            // groupBoxFotos
             // 
-            this.panelSave.Controls.Add(this.button2);
-            this.panelSave.Location = new System.Drawing.Point(2, 662);
-            this.panelSave.Name = "panelSave";
-            this.panelSave.Size = new System.Drawing.Size(495, 44);
-            this.panelSave.TabIndex = 31;
-            this.panelSave.VisibleChanged += new System.EventHandler(this.panelSave_VisibleChanged);
+            this.groupBoxFotos.Controls.Add(this.labelStatusFotos);
+            this.groupBoxFotos.Controls.Add(this.textBoxTimeFotos);
+            this.groupBoxFotos.Controls.Add(this.progressBarFotos);
+            this.groupBoxFotos.Controls.Add(this.buttonStartPhotos);
+            this.groupBoxFotos.Controls.Add(this.checkBoxAutoFotos);
+            this.groupBoxFotos.Controls.Add(this.label9);
+            this.groupBoxFotos.Controls.Add(this.label10);
+            this.groupBoxFotos.Location = new System.Drawing.Point(505, 366);
+            this.groupBoxFotos.Name = "groupBoxFotos";
+            this.groupBoxFotos.Size = new System.Drawing.Size(495, 121);
+            this.groupBoxFotos.TabIndex = 33;
+            this.groupBoxFotos.TabStop = false;
+            this.groupBoxFotos.Text = "Fotos";
+            // 
+            // labelStatusFotos
+            // 
+            this.labelStatusFotos.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelStatusFotos.AutoSize = true;
+            this.labelStatusFotos.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelStatusFotos.Location = new System.Drawing.Point(15, 92);
+            this.labelStatusFotos.Name = "labelStatusFotos";
+            this.labelStatusFotos.Size = new System.Drawing.Size(0, 15);
+            this.labelStatusFotos.TabIndex = 34;
+            // 
+            // textBoxTimeFotos
+            // 
+            this.textBoxTimeFotos.Location = new System.Drawing.Point(96, 64);
+            this.textBoxTimeFotos.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.textBoxTimeFotos.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.textBoxTimeFotos.Name = "textBoxTimeFotos";
+            this.textBoxTimeFotos.Size = new System.Drawing.Size(75, 24);
+            this.textBoxTimeFotos.TabIndex = 27;
+            this.textBoxTimeFotos.Value = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
+            this.textBoxTimeFotos.ValueChanged += new System.EventHandler(this.textBoxTimeFotos_ValueChanged);
+            // 
+            // progressBarFotos
+            // 
+            this.progressBarFotos.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressBarFotos.Location = new System.Drawing.Point(0, 111);
+            this.progressBarFotos.Name = "progressBarFotos";
+            this.progressBarFotos.Size = new System.Drawing.Size(497, 10);
+            this.progressBarFotos.Step = 1;
+            this.progressBarFotos.TabIndex = 33;
+            // 
+            // checkBoxAutoFotos
+            // 
+            this.checkBoxAutoFotos.AutoSize = true;
+            this.checkBoxAutoFotos.Location = new System.Drawing.Point(26, 33);
+            this.checkBoxAutoFotos.Name = "checkBoxAutoFotos";
+            this.checkBoxAutoFotos.Size = new System.Drawing.Size(209, 22);
+            this.checkBoxAutoFotos.TabIndex = 0;
+            this.checkBoxAutoFotos.Text = "Actualizar automáticamente";
+            this.checkBoxAutoFotos.UseVisualStyleBackColor = true;
+            this.checkBoxAutoFotos.CheckedChanged += new System.EventHandler(this.checkBoxAutoFotos_CheckedChanged);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(176, 67);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(65, 18);
+            this.label9.TabIndex = 3;
+            this.label9.Text = "minutos.";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(23, 67);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(67, 18);
+            this.label10.TabIndex = 5;
+            this.label10.Text = "Intervalo:";
+            // 
+            // groupBoxPedidos
+            // 
+            this.groupBoxPedidos.Controls.Add(this.labelStatusPedidos);
+            this.groupBoxPedidos.Controls.Add(this.progressBarPedidos);
+            this.groupBoxPedidos.Controls.Add(this.textBoxTimePedidos);
+            this.groupBoxPedidos.Controls.Add(this.buttonStartOrders);
+            this.groupBoxPedidos.Controls.Add(this.checkBoxAutoPedidos);
+            this.groupBoxPedidos.Controls.Add(this.label11);
+            this.groupBoxPedidos.Controls.Add(this.label12);
+            this.groupBoxPedidos.Location = new System.Drawing.Point(505, 493);
+            this.groupBoxPedidos.Name = "groupBoxPedidos";
+            this.groupBoxPedidos.Size = new System.Drawing.Size(495, 134);
+            this.groupBoxPedidos.TabIndex = 34;
+            this.groupBoxPedidos.TabStop = false;
+            this.groupBoxPedidos.Text = "Pedidos";
+            // 
+            // labelStatusPedidos
+            // 
+            this.labelStatusPedidos.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelStatusPedidos.AutoSize = true;
+            this.labelStatusPedidos.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelStatusPedidos.Location = new System.Drawing.Point(16, 105);
+            this.labelStatusPedidos.Name = "labelStatusPedidos";
+            this.labelStatusPedidos.Size = new System.Drawing.Size(0, 15);
+            this.labelStatusPedidos.TabIndex = 34;
+            // 
+            // progressBarPedidos
+            // 
+            this.progressBarPedidos.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressBarPedidos.Location = new System.Drawing.Point(0, 123);
+            this.progressBarPedidos.Name = "progressBarPedidos";
+            this.progressBarPedidos.Size = new System.Drawing.Size(497, 10);
+            this.progressBarPedidos.Step = 1;
+            this.progressBarPedidos.TabIndex = 33;
+            // 
+            // textBoxTimePedidos
+            // 
+            this.textBoxTimePedidos.Location = new System.Drawing.Point(96, 64);
+            this.textBoxTimePedidos.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.textBoxTimePedidos.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.textBoxTimePedidos.Name = "textBoxTimePedidos";
+            this.textBoxTimePedidos.Size = new System.Drawing.Size(75, 24);
+            this.textBoxTimePedidos.TabIndex = 31;
+            this.textBoxTimePedidos.Value = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
+            this.textBoxTimePedidos.ValueChanged += new System.EventHandler(this.textBoxTimePedidos_ValueChanged);
+            // 
+            // checkBoxAutoPedidos
+            // 
+            this.checkBoxAutoPedidos.AutoSize = true;
+            this.checkBoxAutoPedidos.Location = new System.Drawing.Point(26, 33);
+            this.checkBoxAutoPedidos.Name = "checkBoxAutoPedidos";
+            this.checkBoxAutoPedidos.Size = new System.Drawing.Size(214, 22);
+            this.checkBoxAutoPedidos.TabIndex = 0;
+            this.checkBoxAutoPedidos.Text = "Descargar automáticamente";
+            this.checkBoxAutoPedidos.UseVisualStyleBackColor = true;
+            this.checkBoxAutoPedidos.CheckedChanged += new System.EventHandler(this.checkBoxAutoPedidos_CheckedChanged);
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(177, 67);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(65, 18);
+            this.label11.TabIndex = 3;
+            this.label11.Text = "minutos.";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(23, 67);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(67, 18);
+            this.label12.TabIndex = 5;
+            this.label12.Text = "Intervalo:";
+            // 
+            // groupBoxConfigFactusol
+            // 
+            this.groupBoxConfigFactusol.Controls.Add(this.textBoxYearFactusol);
+            this.groupBoxConfigFactusol.Controls.Add(this.label8);
+            this.groupBoxConfigFactusol.Controls.Add(this.textBoxEmpresaFactusol);
+            this.groupBoxConfigFactusol.Controls.Add(this.label7);
+            this.groupBoxConfigFactusol.Controls.Add(this.buttonExploreRutaFactusol);
+            this.groupBoxConfigFactusol.Controls.Add(this.textBoxRutaFactusol);
+            this.groupBoxConfigFactusol.Controls.Add(this.label1);
+            this.groupBoxConfigFactusol.Controls.Add(this.labelPathExists);
+            this.groupBoxConfigFactusol.Location = new System.Drawing.Point(2, 213);
+            this.groupBoxConfigFactusol.Name = "groupBoxConfigFactusol";
+            this.groupBoxConfigFactusol.Size = new System.Drawing.Size(495, 147);
+            this.groupBoxConfigFactusol.TabIndex = 35;
+            this.groupBoxConfigFactusol.TabStop = false;
+            this.groupBoxConfigFactusol.Text = "Configuración de Factusol";
+            // 
+            // textBoxYearFactusol
+            // 
+            this.textBoxYearFactusol.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxYearFactusol.Location = new System.Drawing.Point(287, 108);
+            this.textBoxYearFactusol.Margin = new System.Windows.Forms.Padding(4);
+            this.textBoxYearFactusol.Name = "textBoxYearFactusol";
+            this.textBoxYearFactusol.Size = new System.Drawing.Size(195, 24);
+            this.textBoxYearFactusol.TabIndex = 32;
+            this.textBoxYearFactusol.TextChanged += new System.EventHandler(this.textBoxYearFactusol_TextChanged);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(287, 86);
+            this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(34, 18);
+            this.label8.TabIndex = 33;
+            this.label8.Text = "Año";
+            // 
+            // textBoxEmpresaFactusol
+            // 
+            this.textBoxEmpresaFactusol.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxEmpresaFactusol.Location = new System.Drawing.Point(26, 108);
+            this.textBoxEmpresaFactusol.Margin = new System.Windows.Forms.Padding(4);
+            this.textBoxEmpresaFactusol.Name = "textBoxEmpresaFactusol";
+            this.textBoxEmpresaFactusol.Size = new System.Drawing.Size(253, 24);
+            this.textBoxEmpresaFactusol.TabIndex = 30;
+            this.textBoxEmpresaFactusol.TextChanged += new System.EventHandler(this.textBoxEmpresaFactusol_TextChanged);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(23, 86);
+            this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(68, 18);
+            this.label7.TabIndex = 31;
+            this.label7.Text = "Empresa";
+            // 
+            // buttonExploreRutaFactusol
+            // 
+            this.buttonExploreRutaFactusol.Location = new System.Drawing.Point(444, 57);
+            this.buttonExploreRutaFactusol.Name = "buttonExploreRutaFactusol";
+            this.buttonExploreRutaFactusol.Size = new System.Drawing.Size(38, 26);
+            this.buttonExploreRutaFactusol.TabIndex = 29;
+            this.buttonExploreRutaFactusol.Text = "...";
+            this.buttonExploreRutaFactusol.UseVisualStyleBackColor = true;
+            this.buttonExploreRutaFactusol.Click += new System.EventHandler(this.buttonExploreRutaFactusol_Click);
+            // 
+            // textBoxRutaFactusol
+            // 
+            this.textBoxRutaFactusol.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxRutaFactusol.Location = new System.Drawing.Point(26, 58);
+            this.textBoxRutaFactusol.Margin = new System.Windows.Forms.Padding(4);
+            this.textBoxRutaFactusol.Name = "textBoxRutaFactusol";
+            this.textBoxRutaFactusol.Size = new System.Drawing.Size(419, 24);
+            this.textBoxRutaFactusol.TabIndex = 27;
+            this.textBoxRutaFactusol.TextChanged += new System.EventHandler(this.textBoxRutaFactusol_TextChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(23, 36);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(141, 18);
+            this.label1.TabIndex = 28;
+            this.label1.Text = "Ruta datos Factusol";
+            // 
+            // groupBoxConfigApi
+            // 
+            this.groupBoxConfigApi.Controls.Add(this.textBoxConfigTokenApi);
+            this.groupBoxConfigApi.Controls.Add(this.label3);
+            this.groupBoxConfigApi.Controls.Add(this.textBoxConfigDirApi);
+            this.groupBoxConfigApi.Controls.Add(this.label2);
+            this.groupBoxConfigApi.Location = new System.Drawing.Point(505, 213);
+            this.groupBoxConfigApi.Name = "groupBoxConfigApi";
+            this.groupBoxConfigApi.Size = new System.Drawing.Size(495, 147);
+            this.groupBoxConfigApi.TabIndex = 36;
+            this.groupBoxConfigApi.TabStop = false;
+            this.groupBoxConfigApi.Text = "Configuración de la API FactuWeb";
+            // 
+            // textBoxConfigTokenApi
+            // 
+            this.textBoxConfigTokenApi.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxConfigTokenApi.Location = new System.Drawing.Point(26, 108);
+            this.textBoxConfigTokenApi.Margin = new System.Windows.Forms.Padding(4);
+            this.textBoxConfigTokenApi.Name = "textBoxConfigTokenApi";
+            this.textBoxConfigTokenApi.Size = new System.Drawing.Size(456, 24);
+            this.textBoxConfigTokenApi.TabIndex = 18;
+            this.textBoxConfigTokenApi.TextChanged += new System.EventHandler(this.textBoxConfigTokenApi_TextChanged);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(23, 86);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(76, 18);
+            this.label3.TabIndex = 20;
+            this.label3.Text = "Token API";
+            // 
+            // textBoxConfigDirApi
+            // 
+            this.textBoxConfigDirApi.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxConfigDirApi.Location = new System.Drawing.Point(26, 57);
+            this.textBoxConfigDirApi.Margin = new System.Windows.Forms.Padding(4);
+            this.textBoxConfigDirApi.Name = "textBoxConfigDirApi";
+            this.textBoxConfigDirApi.Size = new System.Drawing.Size(456, 24);
+            this.textBoxConfigDirApi.TabIndex = 17;
+            this.textBoxConfigDirApi.TextChanged += new System.EventHandler(this.textBoxConfigDirApi_TextChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(23, 35);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(97, 18);
+            this.label2.TabIndex = 19;
+            this.label2.Text = "Dirección API";
+            // 
+            // groupBoxTotal
+            // 
+            this.groupBoxTotal.Controls.Add(this.labelStatusTotal);
+            this.groupBoxTotal.Controls.Add(this.buttonStartTotal);
+            this.groupBoxTotal.Controls.Add(this.progressBarTotal);
+            this.groupBoxTotal.Controls.Add(this.dateTimePickerTimeTotal);
+            this.groupBoxTotal.Controls.Add(this.checkBoxAutoTotal);
+            this.groupBoxTotal.Controls.Add(this.label14);
+            this.groupBoxTotal.Location = new System.Drawing.Point(2, 493);
+            this.groupBoxTotal.Name = "groupBoxTotal";
+            this.groupBoxTotal.Size = new System.Drawing.Size(495, 134);
+            this.groupBoxTotal.TabIndex = 35;
+            this.groupBoxTotal.TabStop = false;
+            this.groupBoxTotal.Text = "Actualización total";
+            // 
+            // labelStatusTotal
+            // 
+            this.labelStatusTotal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelStatusTotal.AutoSize = true;
+            this.labelStatusTotal.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelStatusTotal.Location = new System.Drawing.Point(15, 105);
+            this.labelStatusTotal.Name = "labelStatusTotal";
+            this.labelStatusTotal.Size = new System.Drawing.Size(0, 15);
+            this.labelStatusTotal.TabIndex = 34;
+            // 
+            // progressBarTotal
+            // 
+            this.progressBarTotal.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressBarTotal.Location = new System.Drawing.Point(0, 124);
+            this.progressBarTotal.Name = "progressBarTotal";
+            this.progressBarTotal.Size = new System.Drawing.Size(497, 10);
+            this.progressBarTotal.Step = 1;
+            this.progressBarTotal.TabIndex = 33;
+            // 
+            // checkBoxAutoTotal
+            // 
+            this.checkBoxAutoTotal.AutoSize = true;
+            this.checkBoxAutoTotal.Location = new System.Drawing.Point(26, 33);
+            this.checkBoxAutoTotal.Name = "checkBoxAutoTotal";
+            this.checkBoxAutoTotal.Size = new System.Drawing.Size(209, 22);
+            this.checkBoxAutoTotal.TabIndex = 0;
+            this.checkBoxAutoTotal.Text = "Actualizar automáticamente";
+            this.checkBoxAutoTotal.UseVisualStyleBackColor = true;
+            this.checkBoxAutoTotal.CheckedChanged += new System.EventHandler(this.checkBoxAutoTotal_CheckedChanged);
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(23, 67);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(45, 18);
+            this.label14.TabIndex = 5;
+            this.label14.Text = "Hora:";
+            // 
+            // timerIncrementales
+            // 
+            this.timerIncrementales.Tick += new System.EventHandler(this.timerIncrementales_Tick);
+            // 
+            // timerTotal
+            // 
+            this.timerTotal.Tick += new System.EventHandler(this.timerTotal_Tick);
+            // 
+            // timerPedidos
+            // 
+            this.timerPedidos.Tick += new System.EventHandler(this.timerPedidos_Tick);
+            // 
+            // timerFotos
+            // 
+            this.timerFotos.Tick += new System.EventHandler(this.timerFotos_Tick);
+            // 
+            // labelPathExists
+            // 
+            this.labelPathExists.AutoSize = true;
+            this.labelPathExists.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelPathExists.Location = new System.Drawing.Point(174, 36);
+            this.labelPathExists.Name = "labelPathExists";
+            this.labelPathExists.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.labelPathExists.Size = new System.Drawing.Size(0, 18);
+            this.labelPathExists.TabIndex = 34;
+            this.labelPathExists.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(501, 777);
-            this.Controls.Add(this.panelSave);
-            this.Controls.Add(this.panelActions);
-            this.Controls.Add(this.linkLabel2);
-            this.Controls.Add(this.progressBar1);
-            this.Controls.Add(this.panel4);
-            this.Controls.Add(this.panel3);
-            this.Controls.Add(this.panel2);
-            this.Controls.Add(this.label6);
+            this.ClientSize = new System.Drawing.Size(1004, 746);
+            this.Controls.Add(this.groupBoxTotal);
+            this.Controls.Add(this.groupBoxConfigApi);
             this.Controls.Add(this.linkLabel1);
+            this.Controls.Add(this.linkOpenApplicationFolder);
+            this.Controls.Add(this.groupBoxConfigFactusol);
+            this.Controls.Add(this.groupBoxPedidos);
+            this.Controls.Add(this.groupBoxFotos);
+            this.Controls.Add(this.groupIncrementales);
+            this.Controls.Add(this.panelConfigGlobal);
             this.Controls.Add(this.pictureBox1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -544,16 +816,23 @@ namespace updaterFactuWeb {
             this.Shown += new System.EventHandler(this.Form1_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
-            this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
-            this.panel4.ResumeLayout(false);
-            this.panel4.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            this.panelActions.ResumeLayout(false);
-            this.panelSave.ResumeLayout(false);
+            this.panelConfigGlobal.ResumeLayout(false);
+            this.panelConfigGlobal.PerformLayout();
+            this.groupIncrementales.ResumeLayout(false);
+            this.groupIncrementales.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.textBoxTimeIntervalo)).EndInit();
+            this.groupBoxFotos.ResumeLayout(false);
+            this.groupBoxFotos.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.textBoxTimeFotos)).EndInit();
+            this.groupBoxPedidos.ResumeLayout(false);
+            this.groupBoxPedidos.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.textBoxTimePedidos)).EndInit();
+            this.groupBoxConfigFactusol.ResumeLayout(false);
+            this.groupBoxConfigFactusol.PerformLayout();
+            this.groupBoxConfigApi.ResumeLayout(false);
+            this.groupBoxConfigApi.PerformLayout();
+            this.groupBoxTotal.ResumeLayout(false);
+            this.groupBoxTotal.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -563,47 +842,67 @@ namespace updaterFactuWeb {
 
 		private System.Windows.Forms.PictureBox pictureBox1;
 		private System.Windows.Forms.LinkLabel linkLabel1;
-		private System.Windows.Forms.Timer timer1;
 		private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
 		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
 		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
 		private System.Windows.Forms.NotifyIcon notifyIcon1;
-		private System.Windows.Forms.Button button2;
-		private System.Windows.Forms.Label label6;
 		private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
-		private System.Windows.Forms.Panel panel2;
-		private System.Windows.Forms.TextBox textBox6;
-		private System.Windows.Forms.Label label8;
-		private System.Windows.Forms.TextBox textBox5;
-		private System.Windows.Forms.Label label7;
-		private System.Windows.Forms.Button button3;
-		private System.Windows.Forms.TextBox textBox1;
-		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.Panel panel3;
-		private System.Windows.Forms.TextBox textBox3;
-		private System.Windows.Forms.Label label3;
-		private System.Windows.Forms.TextBox textBox2;
-		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.Panel panel4;
-		private System.Windows.Forms.CheckBox checkBox3;
-		private System.Windows.Forms.CheckBox checkBox2;
-		private System.Windows.Forms.Panel panel1;
-		private System.Windows.Forms.Label label4;
+		private System.Windows.Forms.Panel panelConfigGlobal;
+		private System.Windows.Forms.CheckBox checkBoxInitMin;
+		private System.Windows.Forms.CheckBox checkBoxInitOnStartUp;
 		private System.Windows.Forms.Label label5;
-		private System.Windows.Forms.TextBox textBox4;
-		private System.Windows.Forms.CheckBox checkBox1;
-		private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.ProgressBar progressBar1;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.LinkLabel linkLabel2;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
+		private System.Windows.Forms.Button buttonRemoveCache;
+        private System.Windows.Forms.Button buttonStartPhotos;
+        private System.Windows.Forms.LinkLabel linkOpenApplicationFolder;
+        private System.Windows.Forms.Button buttonStartTotal;
+        private System.Windows.Forms.Button buttonStartIncremental;
+        private System.Windows.Forms.DateTimePicker dateTimePickerTimeTotal;
+        private System.Windows.Forms.Label labelIntervaloIncrementales;
+        private System.Windows.Forms.Button buttonStartOrders;
+        private System.Windows.Forms.GroupBox groupIncrementales;
+        private System.Windows.Forms.CheckBox checkBoxAutoIncrementales;
+        private System.Windows.Forms.GroupBox groupBoxFotos;
+        private System.Windows.Forms.CheckBox checkBoxAutoFotos;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Panel panelActions;
-        private System.Windows.Forms.Panel panelSave;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.GroupBox groupBoxPedidos;
+        private System.Windows.Forms.CheckBox checkBoxAutoPedidos;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.GroupBox groupBoxConfigFactusol;
+        private System.Windows.Forms.TextBox textBoxYearFactusol;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox textBoxEmpresaFactusol;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Button buttonExploreRutaFactusol;
+        private System.Windows.Forms.TextBox textBoxRutaFactusol;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.GroupBox groupBoxConfigApi;
+        private System.Windows.Forms.TextBox textBoxConfigTokenApi;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox textBoxConfigDirApi;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.GroupBox groupBoxTotal;
+        private System.Windows.Forms.CheckBox checkBoxAutoTotal;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.NumericUpDown textBoxTimeIntervalo;
+        private System.Windows.Forms.NumericUpDown textBoxTimeFotos;
+        private System.Windows.Forms.NumericUpDown textBoxTimePedidos;
+        private System.Windows.Forms.Timer timerIncrementales;
+        private System.Windows.Forms.Timer timerTotal;
+        private System.Windows.Forms.Timer timerPedidos;
+        private System.Windows.Forms.Timer timerFotos;
+        private System.Windows.Forms.Label labelStatusIncremental;
+        private System.Windows.Forms.ProgressBar progressBarIncremental;
+        private System.Windows.Forms.Label labelStatusFotos;
+        private System.Windows.Forms.ProgressBar progressBarFotos;
+        private System.Windows.Forms.Label labelStatusPedidos;
+        private System.Windows.Forms.ProgressBar progressBarPedidos;
+        private System.Windows.Forms.Label labelStatusTotal;
+        private System.Windows.Forms.ProgressBar progressBarTotal;
+        private System.Windows.Forms.Label labelPathExists;
     }
 }
 

@@ -9,11 +9,11 @@ using System.Linq;
 using Dapper;
 
 namespace updaterFactuWeb {
-    public class LocalDB {
+    internal class Sqlite {
         private readonly string fileName;
         private readonly string connectionString = "";
 
-        public LocalDB(bool reset = false) {
+        public Sqlite(bool reset = false) {
             fileName = "db.sqlite";
            
             if (reset)
@@ -32,63 +32,13 @@ namespace updaterFactuWeb {
             return conn.OpenAndReturn();
         }
 
-        public bool existTable(DataTable table) {
-            using (var conn = this.GetConnection()) {
-                string tname = this.FixedTableName(table);
-                string stm = "SELECT name FROM sqlite_master WHERE type = 'table' AND name = '{" + tname + "}';";
-                int RowCount = 0;
-                var cmd = new SQLiteCommand(stm, conn);
-                RowCount = Convert.ToInt32(cmd.ExecuteScalar());
-
-                if (RowCount > 0) {
-                    conn.Close();
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
         public bool dropDataTable(DataTable table) {
-            var tableName = this.FixedTableName(table);
+            var tableName = FixedTableName(table);
 
             using (var conn = this.GetConnection())
             using (var tx = conn.BeginTransaction()) {
                 var dropSql = $"DROP TABLE IF EXISTS {tableName};";
                 conn.Execute(dropSql, tx);
-                tx.Commit();
-                conn.Close();
-            }
-            return true;
-        }
-
-        public bool ImportDataTable(DataTable table, string y = null) {
-            if (table is null)
-                return false;
-
-            var columns = table.Columns.Cast<DataColumn>();
-            var columnSql = string.Join(", ", columns.Select(x => this.FixedColumnName(x)));
-            if (y != null) { columnSql = "YEAR, " + columnSql; }
-            var paramSql = string.Join(", ", columns.Select(x => "@" + this.FixedColumnName(x)));
-            if (y != null) { paramSql = "@YEAR, " + paramSql; }
-            var tableName = this.FixedTableName(table);
-            var insertSql = $"INSERT OR REPLACE INTO {tableName} ({columnSql}) VALUES ({paramSql})";
-
-            using (var conn = this.GetConnection())
-            using (var tx = conn.BeginTransaction()) {
-                foreach (DataRow row in table.Rows) {
-                    var param = new Dictionary<string, object>();
-                    if (y != null) { param.Add("YEAR", y); }
-                    foreach (var c in columns) {
-                        var val = row[c];
-                        if (c.AllowDBNull && val == DBNull.Value)
-                            val = null;
-                        param.Add(this.FixedColumnName(c), val);
-                    }
-
-                    conn.Execute(insertSql, param, tx);
-                }
-
                 tx.Commit();
                 conn.Close();
             }
@@ -109,12 +59,19 @@ namespace updaterFactuWeb {
 
           
         public string ImportTable(DataTable dataTable, List<string> indexes, string y = null) {
-            if (dataTable is null) return "";
+            if (dataTable is null){
+                Logger.log(System.Reflection.MethodBase.GetCurrentMethod().Name + " - dataTable no puede ser null.");
+                return "";
+            }
+            if (indexes is null) {
+                Logger.log(System.Reflection.MethodBase.GetCurrentMethod().Name + " - indexes no puede ser null.");
+                return "";
+            }
 
             var tableName = FixedTableName(dataTable);
 
             var ind = string.Join(", ", indexes);
-            if (y != null) { ind= "YEAR,"+ ind; }
+            if (y != null) { ind = "YEAR," + ind; }
 
             var columns = new List<string>();
             if (y != null) { columns.Add("YEAR TEXT"); }
@@ -128,12 +85,10 @@ namespace updaterFactuWeb {
 
             var columnSql = string.Join(", ", columns);
 
-            if (dataTable.PrimaryKey.Count() > 0)
-                Console.WriteLine(dataTable.PrimaryKey);
+            //if (dataTable.PrimaryKey.Count() > 0)
+            //    Console.WriteLine(dataTable.PrimaryKey);
 
-            // TODO: Primary Key, Foreign Keys etc.
             var sql = $"CREATE TABLE IF NOT EXISTS {tableName} ({columnSql} , PRIMARY KEY({ind}), CONSTRAINT 'ipx_{tableName}' UNIQUE({ind})) ";
-            //var sql = $"CREATE TABLE IF NOT EXISTS {tableName} ({columnSql} , PRIMARY KEY({ind})) ";
 
             string resp = "";
             using (var conn = GetConnection()) {
@@ -147,6 +102,11 @@ namespace updaterFactuWeb {
         }
 
         public string ImportColumn(DataColumn dataColumn) {
+            if (dataColumn is null) {
+                Logger.log(System.Reflection.MethodBase.GetCurrentMethod().Name + " - dataColumn no puede ser null.");
+                return "";
+            }
+
             var dataType = ResolveColumnDataType(dataColumn);
             var notNull = dataColumn.AllowDBNull ? string.Empty : " NOT NULL";
             var defaultVal = dataColumn.DefaultValue.ToString();
@@ -156,9 +116,13 @@ namespace updaterFactuWeb {
             return sql;
         }
 
-        private string ResolveColumnDataType(DataColumn dataColumn) {
-            var type = dataColumn.DataType;
+        private static string ResolveColumnDataType(DataColumn dataColumn) {
+            if (dataColumn is null) {
+                Logger.log(System.Reflection.MethodBase.GetCurrentMethod().Name + " - dataColumn no puede ser null.");
+                return "";
+            }
 
+            var type = dataColumn.DataType;
             if (type == typeof(int) || type == typeof(short) || type == typeof(long) || type == typeof(bool))
                 return "INTEGER";
             else if (type == typeof(string) || type == typeof(DateTime))
@@ -167,14 +131,19 @@ namespace updaterFactuWeb {
                 return "REAL";
             else if (type == typeof(byte[]))
                 return "TEXT";
+
+            Logger.log(System.Reflection.MethodBase.GetCurrentMethod().Name + " - Columns type desconocido.");
             throw new Exception("Unknown Column Type");
         }
 
-        public string FixedTableName(DataTable table) {
-            // Remove leading and trailing square brackets.
-            // Table names should not contain ampersands or spaces.
+        public static string FixedTableName(DataTable table) {
+            if (table is null) {
+                Logger.log(new Exception( System.Reflection.MethodBase.GetCurrentMethod().Name + " - table no puede ser null."));
+                return "";
+            }
             return table.TableName.Trim('[', ']').Replace("&", "_and_").Replace(' ', '_');
         }
+
         public string FixedColumnName(DataColumn column) {
             // Column names should not contain spaces or periods.
             var columnName = column.ColumnName.Trim().Replace(' ', '_').Replace('.', '_');
@@ -311,6 +280,5 @@ namespace updaterFactuWeb {
             "WITH",
             "WITHOUT",
         };
-
     }
 }

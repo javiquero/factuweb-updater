@@ -4,11 +4,13 @@ using System.Data;
 using System.Data.OleDb;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace updaterFactuWeb {
 	public class Mdb {
 		private readonly string dbPath;
 		private readonly string connectionString = "";
+
 		public Mdb(string path) {
 			if (File.Exists(path)) {
 				this.dbPath = path;
@@ -16,9 +18,11 @@ namespace updaterFactuWeb {
 				//this.connectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + path + ";";
 				//"; Persist Security Info=False;";
 			} else {
+				Logger.log("The database file was not found or could not be accessed." +  path);
 				throw new FileNotFoundException("The database file was not found or could not be accessed.", path);
 			}
 		}
+
 		public DataTable Query(string queryString) {
 			DataTable dt = new DataTable();
 			try {
@@ -31,50 +35,14 @@ namespace updaterFactuWeb {
 					connection.Close();
 				}
 			} catch (System.Exception e) {
-				Console.WriteLine("Error dbController.query:\n\t {0}\nin query: {1}", e.Message, queryString);
-				//throw e;
+				Exception ex = new Exception($"Error Mdb.execute:\n\t { e.Message}\nin query: {queryString}");
+				Logger.log(ex);
+				throw;
+				//Console.WriteLine("Error dbController.query:\n\t {0}\nin query: {1}", e.Message, queryString);
 			}
 			return dt;
 		}
-		public bool Execute(string queryString) {
-			try {
-				using (OleDbConnection connection = new
-					OleDbConnection(this.connectionString)) {
-					connection.Open();
-					OleDbCommand command = new
-						OleDbCommand(queryString, connection);
-					command.ExecuteNonQuery();
-					connection.Close();
-				}
-				return true;
-			} catch (System.Exception e) {
-				Console.WriteLine("Error Mdb.execute:\n\t {0}\nin query: {1}", e.Message, queryString);
-				throw new Exception($"Error Mdb.execute:\n\t { e.Message}\nin query: {queryString}");
-			}
-		}
-		public bool Execute(List<string> queryStrings) {
-			try {
-				using (OleDbConnection connection = new
-					OleDbConnection(this.connectionString)) {
-					connection.Open();
-					foreach (string item in queryStrings) {
 
-						OleDbCommand command = new
-							OleDbCommand(item, connection);
-						command.ExecuteNonQuery();
-					}
-
-					connection.Close();
-				}
-					return true;
-				
-				//bool result = this.Execute(item);
-				//if (!result) return false;
-			} catch (System.Exception e) {
-				Console.WriteLine("Error Mdb.execute:\n\t {0}\nin querys", e.Message);
-				throw new Exception($"Error Mdb.execute:\n\t { e.Message}\nin querys");
-			}
-		}
 		private List<string> _GetTablesNames = new List<string>();
 		internal List<string> GetTablesNames() {
 			if (_GetTablesNames.Count > 0)
@@ -89,6 +57,7 @@ namespace updaterFactuWeb {
 			_GetTablesNames = resp;
 			return _GetTablesNames;
 		}
+
 		private List<Dictionary<string, object>> _GetTables = new List<Dictionary<string, object>>();
 		internal List<Dictionary<string, object>> GetTables() {
 			try {
@@ -101,17 +70,24 @@ namespace updaterFactuWeb {
 					DataTable schemaTable = connection.GetOleDbSchemaTable(
 						OleDbSchemaGuid.Tables,
 						new object[] { null, null, null, "TABLE" });
-					this._GetTables = this.DataTableToList(schemaTable);
+					this._GetTables = DataTableToList(schemaTable);
 					return this._GetTables;
 				}
 			} catch (System.Exception e) {
-				Console.WriteLine("Error Mdb.GetTables:\n\t {0}", e.Message);
-				throw (e);
+				Logger.log(e);
+				throw;
 			}
 		}
-		public List<Dictionary<string, object>> DataTableToList(DataTable dt) {
+
+		public static List<Dictionary<string, object>> DataTableToList(DataTable dt) {
 			List<Dictionary<string, object>> rows = new List<Dictionary<string, object>>();
 			Dictionary<string, object> row;
+			
+			if (dt is null) {
+				Logger.log(System.Reflection.MethodBase.GetCurrentMethod().Name + " - dt no puede ser null.");
+				return rows;
+			}			
+			
 			foreach (DataRow dr in dt.Rows) {
 				row = new Dictionary<string, object>();
 				foreach (DataColumn col in dt.Columns) {
@@ -122,34 +98,6 @@ namespace updaterFactuWeb {
 			return rows;
 		}
 		
-
-		
-		
-		private Dictionary<string, DataTable> _GetSchemaTable = new Dictionary<string, DataTable>();
-		internal DataTable GetSchemaTable(string model) {
-			try {
-				if (_GetSchemaTable.ContainsKey(model)) {
-					return _GetSchemaTable[model];
-				}
-				using (OleDbConnection connection = new
-					OleDbConnection(this.connectionString)) {
-					connection.Open();
-
-					DataTable schemaTable = connection.GetSchema("Columns", new string[] { null, null, model, null });
-					DataView dv = schemaTable.DefaultView;
-					dv.Sort = "ORDINAL_POSITION ASC";
-					DataTable sortedDT = dv.ToTable();
-					_GetSchemaTable.Add(model, sortedDT);
-					return sortedDT;
-				}
-			} catch (System.Exception e) {
-				Console.WriteLine("Error Mdb.GetSchemaTable:\n\t {0}\nin model: {1}", e.Message, model);
-				return GetSchemaTable(model);
-			}
-		}
-
-
-
 		private Dictionary<string, DataTable> _GetSchemaIndexTable = new Dictionary<string, DataTable>();
 		internal DataTable GetSchemaIndexTable(string model) {
 			try {
@@ -174,12 +122,11 @@ namespace updaterFactuWeb {
 					return sortedDT;
 				}
 			} catch (System.Exception e) {
-				Console.WriteLine("Error dbController.GetSchemaIndexTable:\n\t {0}\nin model: {1}", e.Message, model);
-				return GetSchemaIndexTable(model);
+				//Console.WriteLine("Error dbController.GetSchemaIndexTable:\n\t {0}\nin model: {1}", e.Message, model);
+				Logger.log(e);
+				throw;
 			}
 		}
-
-
 
 		private Dictionary<string, List<string>> _GetIndexes = new Dictionary<string, List<string>>(); 
 		internal List<string> GetIndexes(string model) {
@@ -198,8 +145,6 @@ namespace updaterFactuWeb {
 			_GetIndexes.Add(model, response);
 			return response;
 		}
-		
-
 
 		private Dictionary<string, string> _GetTypeColumn = new Dictionary<string, string>();
 		internal string GetTypeColumn(string tableName, string columnName) {
@@ -216,7 +161,7 @@ namespace updaterFactuWeb {
 			foreach (ADOX.Table item in Cat.Tables) {
 				if (item.Name == tableName && item.Type == "TABLE") {
 					foreach (ADOX.Column c in item.Columns) {
-						string _type_ = this.DataType(c);
+						string _type_ = DataType(c);
 						_GetTypeColumn.Add(tableName + "|" + c.Name, _type_);
 					}
 					cn.Close();
@@ -226,22 +171,7 @@ namespace updaterFactuWeb {
 			return null;
 		}
 
-		private Dictionary<string, bool> _ExistsTable = new Dictionary<string, bool>();
-		public bool ExistsTable(string tableName) {
-			if (_ExistsTable.ContainsKey(tableName)) {
-				return true;
-			}
-			List<string> tables = this.GetTablesNames();
-			foreach (string table in tables) {
-				if (tableName == table) {
-					_ExistsTable.Add(tableName, true);
-					return true;
-				}
-			}
-			return false;
-		}
-
-		private string DataType(ADOX.Column colDef) {
+		private static string DataType(ADOX.Column colDef) {
 			int intLength = 0;
 			int intPrecision = 0;
 			int intScale = 0;
@@ -303,170 +233,6 @@ namespace updaterFactuWeb {
 			}
 			return strNewType;
 		}
-		public string GetStringCreateTable(string tableName, bool y = false) {
-			String createTable = "";
-			DataTable Columns = this.GetSchemaTable(tableName);
-			if (Columns.Rows.Count > 0) {
-				createTable = "CREATE TABLE `" + tableName + "` ( ";
-				if (y) createTable += "`YEAR` VARCHAR (4),";
-				for (int colNum = 0; colNum < Columns.Rows.Count; colNum++) {
-					createTable += "`" + Columns.Rows[colNum].ItemArray[3].ToString() + "` ";
-
-					string _type = this.GetTypeColumn(tableName, Columns.Rows[colNum].ItemArray[3].ToString());
-					createTable += _type;
-
-					if (colNum + 1 < Columns.Rows.Count) {
-						createTable += ",";
-					}
-				}
-				createTable += ");";
-			}
-			return createTable;
-		}
-		public string GetStringJson(string model, DataRow row, bool y = false) {
-			string[] types = new string[row.Table.Columns.Count];
-			for (var i = 0; i < row.Table.Columns.Count; i++) {
-				types[i] = this.GetTypeColumn(model, row.Table.Columns[i].ColumnName);
-			}
-			string response = "{";
-
-			if (y) response += "YEAR: '" + Properties.Settings.Default.year + "'";
-			for (var i = 0; i < row.Table.Columns.Count; i++) {
-				if (response != "{")  response += ", ";
-				response +=  row.Table.Columns[i].ColumnName + ":";
-				if (types[i] == "LONGTEXT" || types[i].StartsWith("VARCHAR")) {
-					response += "'" + row.ItemArray[i].ToString().Replace(@"\", @"\\").Replace(@"'", @"\'") + "'";
-				} else if (types[i] == "DATETIME") {
-					DateTime t = DateTime.ParseExact(row.ItemArray[i].ToString(), "dd/MM/yyyy H:mm:ss",
-						System.Globalization.CultureInfo.InvariantCulture);
-					response += "'" + t.ToString("yyyy-MM-dd HH:mm:ss") + "'";
-				} else if (types[i] == "oleobject") {
-					response += "''";
-				} else {
-					response += row.ItemArray[i].ToString().Replace(",", ".");
-				}
-			}
-			return  response + "}";
-		}
-		public string GetStringJson2(string model, DataRow row, bool y = false) {
-			string[] types = new string[row.Table.Columns.Count];
-			for (var i = 0; i < row.Table.Columns.Count; i++) {
-				types[i] = this.GetTypeColumn(model, row.Table.Columns[i].ColumnName);
-			}
-			string response = "{";
-
-			if (y)
-				response += "\"YEAR\": \"" + Properties.Settings.Default.year + "\"";
-			for (var i = 0; i < row.Table.Columns.Count; i++) {
-				if (response != "{")
-					response += ", ";
-				response += "\"" + row.Table.Columns[i].ColumnName + "\":";
-				if (types[i] == "LONGTEXT" || types[i].StartsWith("VARCHAR")) {
-					//response += "\"" + System.Text.RegularExpressions.Regex.Replace(row.ItemArray[i].ToString().Replace(@"\", @"\\").Replace(@"'", @"\'"), @"\r\n?|\n", "") + "\"";
-					response += "\"" + System.Text.RegularExpressions.Regex.Replace(row.ItemArray[i].ToString().Replace(@"\", @"\\").Replace("\"", "\'").Replace(@"\'", @"\\\'"), @"\r\n?|\n", "") + '"';
-				} else if (types[i] == "DATETIME") {
-					DateTime t = DateTime.ParseExact(row.ItemArray[i].ToString(), "dd/MM/yyyy H:mm:ss",
-						System.Globalization.CultureInfo.InvariantCulture);
-					response += "\"" + t.ToString("yyyy-MM-dd HH:mm:ss") + "\"";
-				} else if (types[i] == "oleobject") {
-					response += "\"\"";
-				} else {
-					response += row.ItemArray[i].ToString().Replace(",", ".");
-				}
-			}
-			return response + "}";
-		}
-		public string GetStringInsert(string model, DataRow row, bool y = false) {
-			string[] types = new string[row.Table.Columns.Count];
-			for (var i = 0; i < row.Table.Columns.Count; i++) {
-				types[i] = this.GetTypeColumn(model, row.Table.Columns[i].ColumnName);
-			}
-			string vals = "(";
-			if (y) vals += "'" + Properties.Settings.Default.year + "'";
-			for (var i = 0; i < row.Table.Columns.Count; i++) {
-				if (vals!="(") vals += ", ";
-				if (types[i] == "LONGTEXT" || types[i].StartsWith("VARCHAR")) {
-					vals += "'" + row.ItemArray[i].ToString().Replace("'", "`").Replace("\"", "`") + "'";
-				} else if (types[i] == "DATETIME") {
-					DateTime t = DateTime.ParseExact(row.ItemArray[i].ToString(), "dd/MM/yyyy H:mm:ss",
-						System.Globalization.CultureInfo.InvariantCulture);
-					vals += "\"" + t.ToString("yyyy-MM-dd HH:mm:ss") + "\"";
-				} else if (types[i] == "oleobject") {
-					vals += "''";
-				} else {
-					if (row.ItemArray[i].ToString() == "") {
-						vals += "NULL";
-					} else {
-						vals += row.ItemArray[i].ToString().Replace(",", ".");
-					}
-				}
-			}
-			return "INSERT INTO " + model + " VALUES " + vals + ");";
-		}
-
-		public static string EscapeString(string str) {
-			return System.Text.RegularExpressions.Regex.Replace(str, @"[\x00'""\b\n\r\t\cZ\\%_]",
-			delegate (System.Text.RegularExpressions.Match match) {
-				string v = match.Value;
-				switch (v) {
-					case "\x00":            // ASCII NUL (0x00) character
-			return "\\0";
-					case "\b":              // BACKSPACE character
-			return "\\b";
-					case "\n":              // NEWLINE (linefeed) character
-			return "\\n";
-					case "\r":              // CARRIAGE RETURN character
-			return "\\r";
-					case "\t":              // TAB
-			return "\\t";
-					case "\u001A":          // Ctrl-Z
-			return "\\Z";
-					default:
-						return "\\" + v;
-				}
-			});
-		}
-
-
-		public string GetStringUpdate(string model, DataRow row, bool y = false) {
-			List<String> indexes = this.GetIndexes(model);
-			string indWhere = this.GetWhereStringConditionByIndexes(model);
-
-			string[] indexItems = new string[indexes.Count];
-			for (var i = 0; i < indexes.Count; i++) {
-				indexItems[i] = row[indexes[i]].ToString();
-			}
-
-			string where = string.Format(indWhere, indexItems);
-
-			string[] types = new string[row.Table.Columns.Count];
-			for (var i = 0; i < row.Table.Columns.Count; i++) {
-				types[i] = this.GetTypeColumn(model, row.Table.Columns[i].ColumnName);
-			}
-			string vals = "";
-			if (y) vals += "`YEAR` =\"" + Properties.Settings.Default.year + "\"";
-			for (var i = 0; i < row.Table.Columns.Count; i++) {
-				if (!indexes.Contains(row.Table.Columns[i].ColumnName)) {
-					if (vals!="") vals += ", ";
-					if (types[i] == "LONGTEXT" || types[i].StartsWith("VARCHAR")) {
-						vals += "`" + row.Table.Columns[i].ColumnName + "`='" + row.ItemArray[i].ToString().Replace("'","`").Replace("\"", "`") + "'";
-					} else if (types[i] == "DATETIME") {
-						DateTime t = DateTime.ParseExact(row.ItemArray[i].ToString(), "dd/MM/yyyy H:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
-						vals += "`" + row.Table.Columns[i].ColumnName + "`='" + t.ToString("yyyy-MM-dd HH:mm:ss") + "'";
-					} else if (types[i] == "oleobject") {
-						vals += "`" + row.Table.Columns[i].ColumnName + "`=''";
-					} else {
-						if (row.ItemArray[i].ToString() == "") {
-							vals += "`" + row.Table.Columns[i].ColumnName + "`=NULL";
-						} else {
-							vals += "`" + row.Table.Columns[i].ColumnName + "`=" + row.ItemArray[i].ToString().Replace(",", ".");
-						}
-					}
-				}
-			}
-			return "UPDATE " + model + " SET " + vals + " " + where + " ;";
-		}
-
 
 		private Dictionary<string, string> _GetWhereStringConditionByIndexes = new Dictionary<string, string>();
 		public string GetWhereStringConditionByIndexes(string model) {
@@ -494,49 +260,31 @@ namespace updaterFactuWeb {
 			return "WHERE " + whereResult;
 		}
 
-
-		public string GetOrderStringByIndexes(string model) {
-			List<string> keys = this.GetIndexes(model);
-			if (keys.Count() == 0) { return ""; }
-
-			string orderResult = "";
-			foreach (string columnName in keys) {
-				if (orderResult != "") { orderResult += ", "; }
-				orderResult += "`" + columnName + "`";
-			}
-			return "ORDER BY " + orderResult + " ASC";
-		}
-		public string GetStringPrimaryKeys(string TableName) {
-			string primaryKeys = "ALTER TABLE " + TableName + " ADD PRIMARY KEY(";
-			DataTable keys = this.GetSchemaIndexTable(TableName);
-			DataRow[] primary = keys.Select("PRIMARY_KEY = true");
-			if (primary.Length > 0) {
-				int numkeys = 0;
-				foreach (DataRow dr in primary) {
-					if (numkeys == 1) {
-						primaryKeys = primaryKeys.Replace("PRIMARY KEY", "CONSTRAINT " + TableName + "_pkey PRIMARY KEY");
+		public bool Execute(List<string> querys) {
+			if (querys == null || querys.Count == 0)
+				return false;
+			using (OleDbConnection connection = new OleDbConnection(this.connectionString)) {
+				connection.Open();
+				using (var transaction = connection.BeginTransaction()) {					
+					try {						
+						foreach (string q in querys) {
+							OleDbCommand command = new OleDbCommand(q, connection, transaction);
+                            command.ExecuteNonQuery();
+                        }
+					} catch (Exception e) {
+						Logger.log(e);
+						Logger.log(System.Reflection.MethodBase.GetCurrentMethod().Name + " - Error al ejecutar los comandos. " + string.Join(";", querys));
+						transaction.Rollback();
+						connection.Close();
+						return false;
+						throw;						
 					}
-					if (numkeys > 0) {
-						primaryKeys += ", ";
-					}
-					primaryKeys += dr["COLUMN_NAME"];
-					numkeys++;
+					transaction.Commit();					
 				}
-				primaryKeys += ");";
-				return primaryKeys;
+				connection.Close();
 			}
-			return "";
+			return true;
 		}
-		public List<string> GetStringKeys(string TableName) {
-			List<string> response = new List<string>();
-			DataTable keys = this.GetSchemaIndexTable(TableName);
-			DataRow[] noPrimary = keys.Select("PRIMARY_KEY = false");
-			if (noPrimary.Length > 0) {
-				foreach (DataRow dr in noPrimary) {
-					response.Add("CREATE INDEX " + TableName + "_" + dr["COLUMN_NAME"] + "_idx ON " + TableName + "(" + dr["COLUMN_NAME"] + ");");
-				}
-			}
-			return response;
-		}
+
 	}
 }

@@ -90,7 +90,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="apiRest_old.cs" />
     <Compile Include="apiRest.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -98,11 +97,12 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Logger.cs" />
     <Compile Include="mdb.cs" />
+    <Compile Include="Orders.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="localDB.cs" />
-    <Compile Include="UpdateSqLite.cs" />
+    <Compile Include="Sqlite.cs" />
     <Compile Include="Update.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
